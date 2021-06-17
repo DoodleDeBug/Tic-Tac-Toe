@@ -34,6 +34,11 @@ h1 {
   background-color: rgb(224, 224, 224);
 }
 
+.restart {
+  margin: 1rem auto;
+  display: block !important;
+}
+
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.603) !important;
   position: fixed;
@@ -70,7 +75,7 @@ h1 {
   background-color: rgb(247, 247, 247);
   color: rgb(51, 48, 33);
   text-align: center;
-  margin: 2rem 10% 0;
+  margin: 1rem 10% 0;
   height: 50px;
   display: flex;
   justify-content: center;

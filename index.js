@@ -47,8 +47,6 @@
     },
   };
 
-  gameBoard.init();
-
   const player = {
     init: () => {
       player.cacheDom();
@@ -81,9 +79,29 @@
       this.display = document.createElement("div");
       display.classList.add("display-box");
       display.innerText = `${p1} vs ${p2}`;
-      this.body.appendChild(display);
+      this.body.insertBefore(display, this.body.childNodes[5]);
     },
   };
 
-  player.init();
+  const game = {
+    init: () => {
+      game.cacheDom();
+      game.bindEvents();
+      game.render();
+    },
+    cacheDom: () => {
+      this.restart = document.querySelector(".restart");
+    },
+    bindEvents: () => {
+      this.restart.addEventListener("click", game.restartGame);
+    },
+    restartGame: () => {
+      console.log("restarted game");
+    },
+    render: () => {},
+  };
+
+  gameBoard.init(); // make board w/ tiles
+  player.init(); //get player names
+  game.init(); //get player names
 })();

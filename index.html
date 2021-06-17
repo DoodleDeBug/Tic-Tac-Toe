@@ -14,7 +14,21 @@
 <body>
     <h1>Tic Tac Toe</h1>
     <div class="board"></div>
+
+    <div class="modal-backdrop hidden">
+        <div class="modal-content">
+            <h2>New Game</h2>
+            <form id="form">
+                <label for="p1-name">Player 1:</label><br>
+                <input type="text" name="p1-name" id="p1-name" placeholder="Name" required><br>
+                <label for="p2-name">Player 2:</label><br>
+                <input type="text" name="p2-name" id="p2-name" placeholder="Name" required><br>
+                <input id='start' class='start btn-success btn' type="submit" value="Start Game">
+            </form>
+        </div>
+    </div>
 </body>
+
 <script src="./index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"

@@ -33,3 +33,35 @@ h1 {
 .tile:hover {
   background-color: rgb(224, 224, 224);
 }
+
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.603) !important;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  height: 300px;
+  width: 300px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content input {
+  margin-top: 5px;
+}
+
+.modal-content label {
+  margin-top: 10px;
+}
+
+.modal-content input[type="submit"] {
+  margin: 2rem 25% 0;
+}
+
+.hidden {
+  display: none;
+}

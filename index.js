@@ -33,9 +33,16 @@
     },
     cacheDom: () => {
       this.board = document.querySelector(".board");
+      this.tiles = document.querySelectorAll(".tile");
     },
     bindEvents: () => {
       //add events
+    },
+    clear: () => {
+      gameBoard.cacheDom();
+      this.tiles.forEach((tile) => tile.remove());
+      gameBoard.boardContent = ["", "", "", "", "", "", "", "", ""];
+      gameBoard.render();
     },
     render: () => {
       // gameBoard.boardContent.forEach((square) => {
@@ -46,7 +53,7 @@
       //   this.board.appendChild(tile);
       // });
 
-      for (let i = 0; i < gameBoard.boardContent.length; i++) {
+      for (let i = 0; i < 9; i++) {
         const tile = document.createElement("div");
         tile.classList.add("tile");
         tile.classList.add(i);
@@ -69,6 +76,11 @@
     },
     bindEvents: () => {
       this.form.addEventListener("submit", player.getPlayers);
+    },
+    reset: () => {
+      this.modal.classList.toggle("hidden");
+      display.remove();
+      gameBoard.clear();
     },
     getPlayers: (e) => {
       e.preventDefault();
@@ -105,12 +117,16 @@
       this.restart.addEventListener("click", game.restartGame);
     },
     restartGame: () => {
+      player.reset();
       console.log("restarted game");
     },
-    render: () => {},
+    render: () => {
+      gameBoard.init;
+      player.init;
+    },
   };
 
   gameBoard.init(); // make board w/ tiles
   player.init(); //get player names
-  game.init(); //get player names
+  game.init();
 })();

@@ -38,12 +38,21 @@
       //add events
     },
     render: () => {
-      gameBoard.boardContent.forEach((square) => {
+      // gameBoard.boardContent.forEach((square) => {
+      //   const tile = document.createElement("div");
+      //   tile.classList.add("tile");
+      //   tile.classList.add(gameBoard.boardContent.indexOf(square));
+      //   tile.innerText = square;
+      //   this.board.appendChild(tile);
+      // });
+
+      for (let i = 0; i < gameBoard.boardContent.length; i++) {
         const tile = document.createElement("div");
         tile.classList.add("tile");
-        tile.innerText = square;
+        tile.classList.add(i);
+        tile.innerText = gameBoard.boardContent[i];
         this.board.appendChild(tile);
-      });
+      }
     },
   };
 

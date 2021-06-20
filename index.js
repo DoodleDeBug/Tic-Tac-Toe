@@ -1,44 +1,52 @@
 (() => {
   // iffe initialize the game
 
-  const gameBoard = {
-    boardContent: ["x", "o", "x", "x", "o", "o", "x", "x", "o"],
-    init: () => {
-      gameBoard.cacheDom();
-      gameBoard.render();
-      gameBoard.bindEvents();
-    },
-    cacheDom: () => {
-      this.board = document.querySelector(".board");
-      this.tiles = document.querySelectorAll(".tile");
-    },
-    bindEvents: () => {
-      this.tiles.forEach((tile) =>
-        tile.addEventListener("click", gameBoard.isAvailable)
-      );
-    },
-    isAvailable: (e) => {
-      console.log(e.target.classList[1]);
-      // console.log(e.target.innerText == "" ? true : false);
-      e.target.innerText == "" ? true : false;
-    },
-    clear: () => {
-      this.tiles.forEach((tile) => tile.remove());
-      gameBoard.boardContent = ["", "", "", "", "", "", "", "", ""];
-      gameBoard.render();
-      gameBoard.bindEvents();
-    },
-    render: () => {
+  const gameBoard = (() => {
+    let boardContent = ["x", "o", "x", "x", "o", "o", "x", "x", "o"];
+
+    const board = document.querySelector(".board");
+    let tiles;
+
+    render();
+
+    function render() {
       for (let i = 0; i < 9; i++) {
         const tile = document.createElement("div");
         tile.classList.add("tile");
         tile.classList.add(i);
-        tile.innerText = gameBoard.boardContent[i];
-        this.board.appendChild(tile);
-        gameBoard.cacheDom();
+        tile.innerText = boardContent[i];
+        board.appendChild(tile);
+
+        //cache DOM
+        tiles = document.querySelectorAll(".tile");
+
+        //bind events
+        tiles.forEach((tile) => tile.addEventListener("click", isAvailable));
       }
-    },
-  };
+    }
+
+    // function bindEvents() {
+    //   tiles.forEach((tile) => tile.addEventListener("click", isAvailable));
+    // }
+
+    function isAvailable(e) {
+      console.log(e.target.classList[1]);
+      // console.log(e.target.innerText == "" ? true : false);
+      e.target.innerText == "" ? true : false;
+    }
+    function clear() {
+      tiles.forEach((tile) => tile.remove());
+      boardContent = ["", "", "", "", "", "", "", "", ""];
+      render();
+    }
+
+    return {
+      boardContent,
+      render,
+      isAvailable,
+      clear,
+    };
+  })();
 
   const player = {
     init: () => {
@@ -109,12 +117,11 @@
       console.log("restarted game");
     },
     render: () => {
-      gameBoard.init;
+      // gameBoard.init;
       player.init;
     },
   };
 
-  gameBoard.init(); // make board w/ tiles
   player.init(); //get player names
   game.init();
 })();

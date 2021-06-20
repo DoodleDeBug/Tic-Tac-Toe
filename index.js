@@ -14,16 +14,13 @@
     },
     bindEvents: () => {
       this.tiles.forEach((tile) =>
-        tile.addEventListener("click", gameBoard.checkAvailability)
+        tile.addEventListener("click", gameBoard.isAvailable)
       );
     },
-    checkAvailability: (e) => {
+    isAvailable: (e) => {
       console.log(e.target.classList[1]);
-      if (e.target.innerText !== "") {
-        console.log("taken");
-      } else {
-        console.log("free");
-      }
+      // console.log(e.target.innerText == "" ? true : false);
+      e.target.innerText == "" ? true : false;
     },
     clear: () => {
       this.tiles.forEach((tile) => tile.remove());

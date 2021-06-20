@@ -67,10 +67,21 @@
       console.log(player2);
       player.clearForm();
       player.render(player1, player2);
+      player.player1Turn(player1, player2);
     },
     clearForm: () => {
       document.querySelector("#p1-name").value = "";
       document.querySelector("#p2-name").value = "";
+    },
+    player1Turn: (p1, p2) => {
+      console.log(p1);
+      /////////// //insert player move function here/////////////////
+      // player.player2Turn(p1, p2);
+    },
+    player2Turn: (p1, p2) => {
+      console.log(p2);
+      /////////// //insert player move function here/////////////////
+      player.player1Turn(p1, p2);
     },
     render: (p1, p2) => {
       this.modal.classList.toggle("hidden");

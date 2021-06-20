@@ -1,27 +1,3 @@
-// (() => {
-//   // iffe initialize the game
-//   const body = document.querySelector("body");
-
-//   const gameBoard = (() => {
-//     let boardContent = ["x", "o", "x", "x", "o", "o", "x", "x", "o"];
-
-//     const board = document.querySelector(".board");
-
-//     const displayBoard = boardContent.forEach((square) => {
-//       const tile = document.createElement("div");
-//       tile.classList.add("tile");
-//       tile.innerText = square;
-//       board.appendChild(tile);
-//     });
-
-//     return { boardContent, displayBoard };
-//   })();
-
-//   const player = (name, token) => {
-//     return { name, token };
-//   };
-// })();
-
 (() => {
   // iffe initialize the game
 
@@ -30,35 +6,39 @@
     init: () => {
       gameBoard.cacheDom();
       gameBoard.render();
+      gameBoard.bindEvents();
     },
     cacheDom: () => {
       this.board = document.querySelector(".board");
       this.tiles = document.querySelectorAll(".tile");
     },
     bindEvents: () => {
-      //add events
+      this.tiles.forEach((tile) =>
+        tile.addEventListener("click", gameBoard.checkAvailability)
+      );
+    },
+    checkAvailability: (e) => {
+      console.log(e.target.classList[1]);
+      if (e.target.innerText !== "") {
+        console.log("taken");
+      } else {
+        console.log("free");
+      }
     },
     clear: () => {
-      gameBoard.cacheDom();
       this.tiles.forEach((tile) => tile.remove());
       gameBoard.boardContent = ["", "", "", "", "", "", "", "", ""];
       gameBoard.render();
+      gameBoard.bindEvents();
     },
     render: () => {
-      // gameBoard.boardContent.forEach((square) => {
-      //   const tile = document.createElement("div");
-      //   tile.classList.add("tile");
-      //   tile.classList.add(gameBoard.boardContent.indexOf(square));
-      //   tile.innerText = square;
-      //   this.board.appendChild(tile);
-      // });
-
       for (let i = 0; i < 9; i++) {
         const tile = document.createElement("div");
         tile.classList.add("tile");
         tile.classList.add(i);
         tile.innerText = gameBoard.boardContent[i];
         this.board.appendChild(tile);
+        gameBoard.cacheDom();
       }
     },
   };

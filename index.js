@@ -1,7 +1,19 @@
-(() => {
+const game = (() => {
   // iffe initialize the game
 
+  //cache DOM
+  restart = document.querySelector(".restart");
+
+  //bindEvents
+  restart.addEventListener("click", restartGame);
+
+  function restartGame() {
+    player.reset();
+    console.log("restarted game");
+  }
+
   const gameBoard = (() => {
+    // all things that affect the board
     let boardContent = ["x", "o", "x", "x", "o", "o", "x", "x", "o"];
 
     const board = document.querySelector(".board");
@@ -49,6 +61,7 @@
   })();
 
   const player = (() => {
+    // should be a factory function so that I can make player and do like mark = new player.... mark.makeMove etc
     //cache DOM
     const body = document.querySelector("body");
     const modal = document.querySelector(".modal-backdrop");
@@ -105,27 +118,4 @@
       reset,
     };
   })();
-
-  const game = {
-    init: () => {
-      game.cacheDom();
-      game.bindEvents();
-      game.render();
-    },
-    cacheDom: () => {
-      this.restart = document.querySelector(".restart");
-    },
-    bindEvents: () => {
-      this.restart.addEventListener("click", game.restartGame);
-    },
-    restartGame: () => {
-      player.reset();
-      console.log("restarted game");
-    },
-    render: () => {
-      // gameBoard.init;
-    },
-  };
-
-  game.init();
 })();

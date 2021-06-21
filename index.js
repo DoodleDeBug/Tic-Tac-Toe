@@ -48,57 +48,63 @@
     };
   })();
 
-  const player = {
-    init: () => {
-      player.cacheDom();
-      player.bindEvents();
-    },
-    cacheDom: () => {
-      this.body = document.querySelector("body");
-      this.modal = document.querySelector(".modal-backdrop");
-      this.form = document.querySelector("#form");
-      this.start = document.querySelector("#start");
-    },
-    bindEvents: () => {
-      this.form.addEventListener("submit", player.getPlayers);
-    },
-    reset: () => {
-      this.modal.classList.toggle("hidden");
-      display.remove();
-      gameBoard.clear();
-    },
-    getPlayers: (e) => {
+  const player = (() => {
+    //cache DOM
+    const body = document.querySelector("body");
+    const modal = document.querySelector(".modal-backdrop");
+    const form = document.querySelector("#form");
+    const start = document.querySelector("#start");
+
+    //bind Events
+    form.addEventListener("submit", getPlayers);
+
+    function getPlayers(e) {
       e.preventDefault();
       let player1 = document.querySelector("#p1-name").value;
       console.log(player1);
       let player2 = document.querySelector("#p2-name").value;
       console.log(player2);
-      player.clearForm();
-      player.render(player1, player2);
-      player.player1Turn(player1, player2);
-    },
-    clearForm: () => {
+      clearForm();
+      render(player1, player2);
+      player1Turn(player1, player2);
+    }
+
+    function render(p1, p2) {
+      modal.classList.toggle("hidden");
+      display = document.createElement("div");
+      display.classList.add("display-box");
+      display.innerText = `${p1} vs ${p2}`;
+      body.insertBefore(display, body.childNodes[5]);
+    }
+
+    function clearForm() {
       document.querySelector("#p1-name").value = "";
       document.querySelector("#p2-name").value = "";
-    },
-    player1Turn: (p1, p2) => {
+    }
+
+    function player1Turn(p1, p2) {
       console.log(p1);
       /////////// //insert player move function here/////////////////
       // player.player2Turn(p1, p2);
-    },
-    player2Turn: (p1, p2) => {
+    }
+    function player2Turn(p1, p2) {
       console.log(p2);
       /////////// //insert player move function here/////////////////
       player.player1Turn(p1, p2);
-    },
-    render: (p1, p2) => {
-      this.modal.classList.toggle("hidden");
-      this.display = document.createElement("div");
-      display.classList.add("display-box");
-      display.innerText = `${p1} vs ${p2}`;
-      this.body.insertBefore(display, this.body.childNodes[5]);
-    },
-  };
+    }
+
+    function reset() {
+      modal.classList.toggle("hidden");
+      display.remove();
+      gameBoard.clear();
+    }
+
+    return {
+      player1Turn,
+      player2Turn,
+      reset,
+    };
+  })();
 
   const game = {
     init: () => {
@@ -118,10 +124,8 @@
     },
     render: () => {
       // gameBoard.init;
-      player.init;
     },
   };
 
-  player.init(); //get player names
   game.init();
 })();

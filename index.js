@@ -1,6 +1,6 @@
 const game = (() => {
   // iffe initialize the game
-
+  let token = "";
   //cache DOM
   restart = document.querySelector(".restart");
 
@@ -14,7 +14,7 @@ const game = (() => {
 
   const gameBoard = (() => {
     // all things that affect the board
-    let boardContent = ["x", "o", "x", "x", "o", "o", "x", "x", "o"];
+    let boardContent = ["", "", "", "", "", "", "", "", ""];
 
     const board = document.querySelector(".board");
     let tiles;
@@ -33,7 +33,7 @@ const game = (() => {
         tiles = document.querySelectorAll(".tile");
 
         //bind events
-        tiles.forEach((tile) => tile.addEventListener("click", isAvailable));
+        tiles.forEach((tile) => tile.addEventListener("click", makeMove));
       }
     }
 
@@ -41,12 +41,38 @@ const game = (() => {
     //   tiles.forEach((tile) => tile.addEventListener("click", isAvailable));
     // }
 
-    function isAvailable(e) {
-      console.log(e.target.classList[1]);
-      // console.log(e.target.innerText == "" ? true : false);
-      e.target.innerText == "" ? true : false;
+    function makeMove(e) {
+      if (token == "") {
+        token = "X";
+      } else if (token == "X") {
+        token = "O";
+      } else {
+        token = "X";
+      }
+
+      if (isAvailable(e)) {
+        boardContent[isAvailable(e)] = token;
+        refresh();
+      } else {
+        console.log("invalid move");
+      }
     }
-    function clear() {
+
+    function isAvailable(e) {
+      // console.log(e.target.classList[1]);
+      // console.log(e.target.innerText == "" ? true : false);
+      if (e.target.innerText == "") {
+        return e.target.classList[1];
+      } else {
+        return false;
+      }
+    }
+    function refresh() {
+      tiles.forEach((tile) => tile.remove());
+      render();
+    }
+
+    function restart() {
       tiles.forEach((tile) => tile.remove());
       boardContent = ["", "", "", "", "", "", "", "", ""];
       render();
@@ -55,18 +81,20 @@ const game = (() => {
     return {
       boardContent,
       render,
-      isAvailable,
-      clear,
+      makeMove,
+      restart,
     };
   })();
 
   const player = (() => {
     // should be a factory function so that I can make player and do like mark = new player.... mark.makeMove etc
+
+    let token;
+
     //cache DOM
     const body = document.querySelector("body");
     const modal = document.querySelector(".modal-backdrop");
     const form = document.querySelector("#form");
-    const start = document.querySelector("#start");
 
     //bind Events
     form.addEventListener("submit", getPlayers);
@@ -79,7 +107,6 @@ const game = (() => {
       console.log(player2);
       clearForm();
       render(player1, player2);
-      player1Turn(player1, player2);
     }
 
     function render(p1, p2) {
@@ -95,26 +122,13 @@ const game = (() => {
       document.querySelector("#p2-name").value = "";
     }
 
-    function player1Turn(p1, p2) {
-      console.log(p1);
-      /////////// //insert player move function here/////////////////
-      // player.player2Turn(p1, p2);
-    }
-    function player2Turn(p1, p2) {
-      console.log(p2);
-      /////////// //insert player move function here/////////////////
-      player.player1Turn(p1, p2);
-    }
-
     function reset() {
       modal.classList.toggle("hidden");
       display.remove();
-      gameBoard.clear();
+      gameBoard.restart();
     }
 
     return {
-      player1Turn,
-      player2Turn,
       reset,
     };
   })();

@@ -89,8 +89,6 @@ const game = (() => {
   const player = (() => {
     // should be a factory function so that I can make player and do like mark = new player.... mark.makeMove etc
 
-    let token;
-
     //cache DOM
     const body = document.querySelector("body");
     const modal = document.querySelector(".modal-backdrop");
@@ -111,10 +109,8 @@ const game = (() => {
 
     function render(p1, p2) {
       modal.classList.toggle("hidden");
-      display = document.createElement("div");
-      display.classList.add("display-box");
+      display = document.getElementById("display");
       display.innerText = `${p1} vs ${p2}`;
-      body.insertBefore(display, body.childNodes[5]);
     }
 
     function clearForm() {
@@ -124,7 +120,7 @@ const game = (() => {
 
     function reset() {
       modal.classList.toggle("hidden");
-      display.remove();
+      display.innerText = "";
       gameBoard.restart();
     }
 

@@ -90,7 +90,6 @@ const game = (() => {
     // should be a factory function so that I can make player and do like mark = new player.... mark.makeMove etc
 
     //cache DOM
-    const body = document.querySelector("body");
     const modal = document.querySelector(".modal-backdrop");
     const form = document.querySelector("#form");
 
@@ -110,6 +109,7 @@ const game = (() => {
     function render(p1, p2) {
       modal.classList.toggle("hidden");
       display = document.getElementById("display");
+
       display.innerText = `${p1} vs ${p2}`;
     }
 

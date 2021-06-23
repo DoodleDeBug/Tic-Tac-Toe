@@ -110,6 +110,45 @@ const gameBoard = (() => {
     } else {
       alert("invalid move");
     }
+
+    checkWin(boardContent);
+  }
+
+  function isEqual(...args) {
+    let len = args.length;
+    let obj = arguments[0];
+
+    for (let i = 1; i < len; i++) {
+      if (arguments[i] == "") {
+        return false;
+      }
+
+      if (obj == arguments[i]) {
+        continue;
+      } else {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  function checkWin(bC) {
+    console.log(bC);
+
+    let win =
+      isEqual(bC[0], bC[1], bC[2]) ||
+      isEqual(bC[3], bC[4], bC[5]) ||
+      isEqual(bC[6], bC[7], bC[8]) ||
+      isEqual(bC[0], bC[3], bC[6]) ||
+      isEqual(bC[1], bC[4], bC[7]) ||
+      isEqual(bC[2], bC[5], bC[8]) ||
+      isEqual(bC[0], bC[4], bC[8]) ||
+      isEqual(bC[2], bC[4], bC[6]);
+
+    if (win) {
+      console.log("winner");
+    }
   }
 
   function isAvailable(e) {

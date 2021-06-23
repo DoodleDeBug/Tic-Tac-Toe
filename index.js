@@ -42,19 +42,18 @@ const game = (() => {
     // }
 
     function makeMove(e) {
-      if (token == "") {
-        token = "X";
-      } else if (token == "X") {
-        token = "O";
-      } else {
-        token = "X";
-      }
-
       if (isAvailable(e)) {
+        if (token == "") {
+          token = "X";
+        } else if (token == "X") {
+          token = "O";
+        } else {
+          token = "X";
+        }
         boardContent[isAvailable(e)] = token;
         refresh();
       } else {
-        console.log("invalid move");
+        alert("invalid move");
       }
     }
 

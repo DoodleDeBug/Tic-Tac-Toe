@@ -1,32 +1,51 @@
+/////////////////PLAYER //////////////////
+
+const player = (name, token) => {
+  const getToken = () => token;
+  const getName = () => name;
+
+  return { getName, getToken };
+};
+
 const game = (() => {
-  // iffe initialize the game
-
-  let token = "";
-
   //cache DOM
   const modal = document.querySelector(".modal-backdrop");
   const form = document.querySelector("#form");
-  const restart = document.querySelector(".restart");
+  const restartBtn = document.querySelector(".restart");
+  const display = document.getElementById("display");
 
   //bindEvents
   form.addEventListener("submit", getPlayers);
-  restart.addEventListener("click", restartGame);
+  restartBtn.addEventListener("click", restartGame);
 
   function getPlayers(e) {
     e.preventDefault();
 
-    let player1 = player(document.querySelector("#p1-name").value, "X");
-    let player2 = player(document.querySelector("#p2-name").value, "O");
-
-    // console.log(player1);
-    // console.log(player2);
+    let players = setPlayers();
 
     clearForm();
     modal.classList.toggle("hidden");
 
-    player1.displayTurn(player1.name);
+    // player1.displayTurn(player1.name);
 
-    // render(player1, player2);
+    render(players[0]);
+  }
+
+  function setPlayers() {
+    let player1 = player(document.querySelector("#p1-name").value, "X");
+    let player2 = player(document.querySelector("#p2-name").value, "O");
+
+    return [player1, player2];
+  }
+
+  function render(player) {
+    console.log(player.getName());
+    // display.innerText = `${p1.getName()} vs ${p2.getName()}`;
+    if (player.getName() == "") {
+      display.innerText = `It's ${player.getToken()}'s turn`;
+    } else {
+      display.innerText = `It's ${player.getName()}'s turn. Your token is ${player.getToken()}`;
+    }
   }
 
   function restartGame() {
@@ -41,108 +60,81 @@ const game = (() => {
     document.querySelector("#p2-name").value = "";
   }
 
-  const gameBoard = (() => {
-    // all things that affect the board
+  return { setPlayers, render };
+})();
 
-    let boardContent = ["", "", "", "", "", "", "", "", ""];
-    let tiles;
+///////////////// GAMEBOARD //////////////////
 
-    // cache DOM
-    const board = document.querySelector(".board");
+const gameBoard = (() => {
+  // all things that affect the board
 
-    render();
+  let boardContent = ["", "", "", "", "", "", "", "", ""];
+  let players = game.setPlayers();
+  let token = players[0].getToken();
+  let tiles;
 
-    function render() {
-      for (let i = 0; i < 9; i++) {
-        const tile = document.createElement("div");
-        tile.classList.add("tile");
-        tile.classList.add(i);
-        tile.innerText = boardContent[i]; // inner text of tile corresponds to boardcontent
-        board.appendChild(tile);
+  // cache DOM
+  const board = document.querySelector(".board");
 
-        //cache DOM
-        tiles = document.querySelectorAll(".tile");
+  render();
 
-        //bind events
-        tiles.forEach((tile) => tile.addEventListener("click", makeMove));
-      }
+  function render() {
+    for (let i = 0; i < 9; i++) {
+      const tile = document.createElement("div");
+      tile.classList.add("tile");
+      tile.classList.add(i);
+      tile.innerText = boardContent[i]; // inner text of tile corresponds to boardcontent
+      board.appendChild(tile);
+
+      //cache DOM
+      tiles = document.querySelectorAll(".tile");
+
+      //bind events
+      tiles.forEach((tile) => tile.addEventListener("click", makeMove));
     }
+  }
 
-    function makeMove(e) {
-      if (isAvailable(e)) {
-        if (token == "") {
-          token = "X";
-        } else if (token == "X") {
-          token = "O";
-        } else {
-          token = "X";
-        }
+  function makeMove(e) {
+    if (isAvailable(e)) {
+      if (token == players[0].getToken()) {
         boardContent[isAvailable(e)] = token;
         update();
-      } else {
-        alert("invalid move");
+        token = players[1].getToken();
+        game.render(players[1]);
+      } else if (token == players[1].getToken()) {
+        boardContent[isAvailable(e)] = token;
+        update();
+        token = players[0].getToken();
+        game.render(players[0]);
       }
+    } else {
+      alert("invalid move");
     }
+  }
 
-    function alternateMoves(e) {
-      if (isAvailable(e)) {
-        console.log(player.token);
-      }
+  function isAvailable(e) {
+    if (e.target.innerText == "") {
+      return e.target.classList[1];
+    } else {
+      return false;
     }
+  }
 
-    function isAvailable(e) {
-      // console.log(e.target.classList[1]);
-      // console.log(e.target.innerText == "" ? true : false);
-      if (e.target.innerText == "") {
-        return e.target.classList[1];
-      } else {
-        return false;
-      }
-    }
-    function update() {
-      tiles.forEach((tile) => tile.remove());
-      render();
-    }
+  function update() {
+    tiles.forEach((tile) => tile.remove());
+    render();
+  }
 
-    function restart() {
-      tiles.forEach((tile) => tile.remove());
-      boardContent = ["", "", "", "", "", "", "", "", ""];
-      render();
-    }
+  function restart() {
+    tiles.forEach((tile) => tile.remove());
+    boardContent = ["", "", "", "", "", "", "", "", ""];
+    render();
+  }
 
-    return {
-      boardContent,
-      render,
-      makeMove,
-      restart,
-    };
-  })();
-
-  const player = (name, token) => {
-    // let token = token;
-
-    const displayTurn = (name) => {
-      display = document.getElementById("display");
-
-      if (!name) {
-        display.innerText = `It's ${token}'s turn`;
-      } else {
-        display.innerText = `It's ${name}'s turn. Your token is ${token}`;
-      }
-    };
-
-    return { name, token, displayTurn };
+  return {
+    boardContent,
+    render,
+    makeMove,
+    restart,
   };
-
-  // const players = (() => {
-  //   // should be a factory function so that I can make player and do like mark = new player.... mark.makeMove etc
-
-  //   function render(p1, p2) {
-  //     modal.classList.toggle("hidden");
-  //     display = document.getElementById("display");
-
-  //     display.innerText = `${p1} vs ${p2}`;
-  //   }
-
-  // })();
 })();

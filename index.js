@@ -37,13 +37,15 @@ const game = (() => {
     return [player1, player2];
   }
 
-  function renderMsg(player) {
-    console.log(player.getName());
-    // display.innerText = `${p1.getName()} vs ${p2.getName()}`;
-    if (player.getName() == "") {
-      display.innerText = `It's ${player.getToken()}'s turn`;
+  function renderMsg(input) {
+    // console.log(input.getName());
+
+    if (input == "Game Over") {
+      display.innerText = input;
+    } else if (input.getName() == "") {
+      display.innerText = `It's ${input.getToken()}'s turn`;
     } else {
-      display.innerText = `It's ${player.getName()}'s turn. Your token is ${player.getToken()}`;
+      display.innerText = `It's ${input.getName()}'s turn. Your token is ${input.getToken()}`;
     }
   }
 
@@ -99,11 +101,13 @@ const gameBoard = (() => {
         boardContent[isAvailable(e)] = token;
         update();
         token = players[1].getToken();
+
         game.renderMsg(players[1]);
       } else if (token == players[1].getToken()) {
         boardContent[isAvailable(e)] = token;
         update();
         token = players[0].getToken();
+
         game.renderMsg(players[0]);
       }
     } else {
@@ -143,7 +147,7 @@ const gameBoard = (() => {
       isEqual(bC[2], bC[4], bC[6]);
 
     if (win) {
-      tiles.forEach((tile) => tile.removeEventListener("click", makeMove));
+      gameOver();
 
       if (token == "X") {
         console.log("o won");
@@ -160,8 +164,13 @@ const gameBoard = (() => {
 
     if (!validMovesLeft) {
       console.log("tie");
-      tiles.forEach((tile) => tile.removeEventListener("click", makeMove));
+      gameOver();
     }
+  }
+
+  function gameOver() {
+    tiles.forEach((tile) => tile.removeEventListener("click", makeMove));
+    game.renderMsg("Game Over");
   }
 
   function isAvailable(e) {

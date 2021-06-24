@@ -150,6 +150,15 @@ const gameBoard = (() => {
       } else {
         console.log("x won");
       }
+    } else {
+      checkTie(bC);
+    }
+  }
+
+  function checkTie(bC) {
+    let validMovesLeft = bC.includes("");
+    if (!validMovesLeft) {
+      console.log("tie");
     }
   }
 

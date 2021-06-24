@@ -145,6 +145,8 @@ const gameBoard = (() => {
       isEqual(bC[2], bC[4], bC[6]);
 
     if (win) {
+      tiles.forEach((tile) => tile.removeEventListener("click", makeMove));
+
       if (token == "X") {
         console.log("o won");
       } else {
@@ -157,8 +159,10 @@ const gameBoard = (() => {
 
   function checkTie(bC) {
     let validMovesLeft = bC.includes("");
+
     if (!validMovesLeft) {
       console.log("tie");
+      tiles.forEach((tile) => tile.removeEventListener("click", makeMove));
     }
   }
 

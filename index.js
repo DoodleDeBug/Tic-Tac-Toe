@@ -118,7 +118,7 @@ const gameBoard = (() => {
 
     for (let i = 1; i < args.length; i++) {
       if (args[i] == "") {
-        return false;
+        return false; // dont declare win for empty board/ multiple "" in a row
       }
 
       if (obj == args[i]) {
@@ -181,6 +181,7 @@ const gameBoard = (() => {
     tiles.forEach((tile) => tile.remove());
     boardContent = ["", "", "", "", "", "", "", "", ""];
     render();
+    token = players[0].getToken();
   }
 
   return {

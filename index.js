@@ -111,7 +111,7 @@ const gameBoard = (() => {
       alert("invalid move");
     }
 
-    checkWin(boardContent);
+    checkWin(boardContent, token);
   }
 
   function isEqual(...args) {
@@ -133,9 +133,7 @@ const gameBoard = (() => {
     return true;
   }
 
-  function checkWin(bC) {
-    console.log(bC);
-
+  function checkWin(bC, token) {
     let win =
       isEqual(bC[0], bC[1], bC[2]) ||
       isEqual(bC[3], bC[4], bC[5]) ||
@@ -147,7 +145,11 @@ const gameBoard = (() => {
       isEqual(bC[2], bC[4], bC[6]);
 
     if (win) {
-      console.log("winner");
+      if (token == "X") {
+        console.log("o won");
+      } else {
+        console.log("x won");
+      }
     }
   }
 

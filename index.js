@@ -7,6 +7,8 @@ const player = (name, token) => {
   return { getName, getToken };
 };
 
+///////////////// GAME //////////////////
+
 const game = (() => {
   //cache DOM
   const modal = document.querySelector(".modal-backdrop");
@@ -22,13 +24,10 @@ const game = (() => {
     e.preventDefault();
 
     let players = setPlayers();
+    renderMsg(players[0]);
 
     clearForm();
     modal.classList.toggle("hidden");
-
-    // player1.displayTurn(player1.name);
-
-    render(players[0]);
   }
 
   function setPlayers() {
@@ -38,7 +37,7 @@ const game = (() => {
     return [player1, player2];
   }
 
-  function render(player) {
+  function renderMsg(player) {
     console.log(player.getName());
     // display.innerText = `${p1.getName()} vs ${p2.getName()}`;
     if (player.getName() == "") {
@@ -52,7 +51,7 @@ const game = (() => {
     modal.classList.toggle("hidden");
     display.innerText = "";
     gameBoard.restart();
-    console.log("restarted game");
+    // console.log("restarted game");
   }
 
   function clearForm() {
@@ -60,7 +59,7 @@ const game = (() => {
     document.querySelector("#p2-name").value = "";
   }
 
-  return { setPlayers, render };
+  return { setPlayers, renderMsg };
 })();
 
 ///////////////// GAMEBOARD //////////////////
@@ -100,12 +99,12 @@ const gameBoard = (() => {
         boardContent[isAvailable(e)] = token;
         update();
         token = players[1].getToken();
-        game.render(players[1]);
+        game.renderMsg(players[1]);
       } else if (token == players[1].getToken()) {
         boardContent[isAvailable(e)] = token;
         update();
         token = players[0].getToken();
-        game.render(players[0]);
+        game.renderMsg(players[0]);
       }
     } else {
       alert("invalid move");
@@ -115,15 +114,14 @@ const gameBoard = (() => {
   }
 
   function isEqual(...args) {
-    let len = args.length;
-    let obj = arguments[0];
+    let obj = args[0];
 
-    for (let i = 1; i < len; i++) {
-      if (arguments[i] == "") {
+    for (let i = 1; i < args.length; i++) {
+      if (args[i] == "") {
         return false;
       }
 
-      if (obj == arguments[i]) {
+      if (obj == args[i]) {
         continue;
       } else {
         return false;
@@ -186,9 +184,6 @@ const gameBoard = (() => {
   }
 
   return {
-    boardContent,
-    render,
-    makeMove,
     restart,
   };
 })();

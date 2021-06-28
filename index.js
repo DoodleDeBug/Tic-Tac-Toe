@@ -150,9 +150,9 @@ const gameBoard = (() => {
       gameOver();
 
       if (token == "X") {
-        console.log("o won");
+        alert("o won");
       } else {
-        console.log("x won");
+        alert("x won");
       }
     } else {
       checkTie(bC);
@@ -163,8 +163,8 @@ const gameBoard = (() => {
     let validMovesLeft = bC.includes("");
 
     if (!validMovesLeft) {
-      console.log("tie");
       gameOver();
+      alert("tie");
     }
   }
 

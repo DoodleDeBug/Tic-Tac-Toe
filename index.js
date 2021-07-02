@@ -72,40 +72,31 @@ const gameBoard = (() => {
   let boardContent = ["", "", "", "", "", "", "", "", ""];
   let players = game.setPlayers();
   let token = players[0].getToken();
-  let tiles;
 
   // cache DOM
-  const board = document.querySelector(".board");
+  const tiles = document.querySelectorAll(".tile");
+  const tilesArray = Array.from(tiles);
 
-  render();
+  //bind events
+  tiles.forEach((tile) => tile.addEventListener("click", makeMove));
 
   function render() {
-    for (let i = 0; i < 9; i++) {
-      const tile = document.createElement("div");
-      tile.classList.add("tile");
-      tile.classList.add(i);
-      tile.innerText = boardContent[i]; // inner text of tile corresponds to boardcontent
-      board.appendChild(tile);
-
-      //cache DOM
-      tiles = document.querySelectorAll(".tile");
-
-      //bind events
-      tiles.forEach((tile) => tile.addEventListener("click", makeMove));
-    }
+    tiles.forEach(
+      (tile) => (tile.innerText = boardContent[tilesArray.indexOf(tile)])
+    ); // inner text of tile corresponds to boardcontent
   }
 
   function makeMove(e) {
     if (isAvailable(e)) {
       if (token == players[0].getToken()) {
         boardContent[isAvailable(e)] = token;
-        update();
+        render();
         token = players[1].getToken();
 
         game.renderMsg(players[1]);
       } else if (token == players[1].getToken()) {
         boardContent[isAvailable(e)] = token;
-        update();
+        render();
         token = players[0].getToken();
 
         game.renderMsg(players[0]);
@@ -179,11 +170,6 @@ const gameBoard = (() => {
     } else {
       return false;
     }
-  }
-
-  function update() {
-    tiles.forEach((tile) => tile.remove());
-    render();
   }
 
   function restart() {

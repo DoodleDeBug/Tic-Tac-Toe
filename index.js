@@ -102,7 +102,7 @@ const gameBoard = (() => {
         game.renderMsg(players[0]);
       }
     } else {
-      alert("invalid move");
+      alert("Invalid move! Try again");
     }
 
     checkWin(boardContent, token);
@@ -141,9 +141,9 @@ const gameBoard = (() => {
       gameOver();
 
       if (token == "X") {
-        alert("o won");
+        alert("Player O won! Press the restart button to play again");
       } else {
-        alert("x won");
+        alert("Player X won! Press the restart button to play again");
       }
     } else {
       checkTie(bC);
@@ -155,7 +155,7 @@ const gameBoard = (() => {
 
     if (!validMovesLeft) {
       gameOver();
-      alert("tie");
+      alert("It was a tie! Press the restart button to play again");
     }
   }
 

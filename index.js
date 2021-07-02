@@ -173,7 +173,6 @@ const gameBoard = (() => {
   }
 
   function restart() {
-    tiles.forEach((tile) => tile.remove());
     boardContent = ["", "", "", "", "", "", "", "", ""];
     render();
     token = players[0].getToken();

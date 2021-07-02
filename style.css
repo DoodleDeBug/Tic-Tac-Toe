@@ -99,4 +99,15 @@ h1 {
   color: #333021 !important;
   letter-spacing: 2px;
 }
+
+@media (max-width: 500px) {
+  .board {
+    height: 400px;
+    width: 400px;
+  }
+  .tile {
+    height: 120px;
+    width: 120px;
+  }
+}
 /*# sourceMappingURL=style.css.map */

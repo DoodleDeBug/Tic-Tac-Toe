@@ -175,6 +175,7 @@ const gameBoard = (() => {
   function restart() {
     boardContent = ["", "", "", "", "", "", "", "", ""];
     render();
+    tiles.forEach((tile) => tile.addEventListener("click", makeMove));
     token = players[0].getToken();
   }
 

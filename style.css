@@ -8,18 +8,11 @@ h1 {
   height: 490px;
   width: 490px;
   margin: auto;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   padding: 10px;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
@@ -28,17 +21,10 @@ h1 {
   color: #333021;
   height: 150px;
   width: 150px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -ms-flex-line-pack: center;
-      align-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
   font-size: 60px;
 }
 
@@ -54,41 +40,13 @@ h1 {
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.603) !important;
   position: fixed;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-content {
-  height: 300px;
-  width: 300px !important;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.modal-content input {
-  margin-top: 5px;
-}
-
-.modal-content label {
-  margin-top: 10px;
-}
-
-.modal-content input[type="submit"] {
-  margin: 2rem 25% 0;
+  width: 400px !important;
 }
 
 .hidden {
@@ -105,9 +63,9 @@ h1 {
     height: 400px;
     width: 400px;
   }
+
   .tile {
     height: 120px;
     width: 120px;
   }
-}
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */

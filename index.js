@@ -47,6 +47,10 @@ const game = (() => {
     }
   }
 
+  function renderMsg(msg) {
+    display.innerText = msg;
+  }
+
   function restartGame() {
     modal.classList.toggle("hidden");
     display.innerText = "";
@@ -80,15 +84,19 @@ const game = (() => {
 
     if (e.target.innerText == "") {
       makeMove(position, token);
-      if (token == players[0].getToken()) {
-        // X
-        token = players[1].getToken();
-      } else if (token == players[1].getToken()) {
-        // O
-        token = players[0].getToken();
-      }
+      switchPlayerToken();
     } else {
       alert("Invalid move! Try again");
+    }
+  }
+
+  function switchPlayerToken() {
+    if (token == players[0].getToken()) {
+      // X
+      token = players[1].getToken();
+    } else if (token == players[1].getToken()) {
+      // O
+      token = players[0].getToken();
     }
   }
 
@@ -164,10 +172,6 @@ const game = (() => {
     if (!validMovesLeft) {
       gameOver("tie");
     }
-  }
-
-  function renderMsg(msg) {
-    display.innerText = msg;
   }
 
   function gameOver(winner) {

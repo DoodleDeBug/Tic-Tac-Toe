@@ -26,7 +26,7 @@ const game = (() => {
     e.preventDefault();
 
     players = setPlayers();
-    renderMsg(players[0]);
+    displayTurn(players[0]);
     token = players[0].getToken();
     clearForm();
     modal.classList.toggle("hidden");
@@ -39,15 +39,11 @@ const game = (() => {
     return [player1, player2];
   }
 
-  function renderMsg(input) {
-    // console.log(input.getName());
-
-    if (input == "Game Over") {
-      display.innerText = input;
-    } else if (input.getName() == "") {
-      display.innerText = `It's ${input.getToken()}'s turn`;
+  function displayTurn(player) {
+    if (player.getName() == "") {
+      display.innerText = `It's ${player.getToken()}'s turn`;
     } else {
-      display.innerText = `It's ${input.getName()}'s turn. Your token is ${input.getToken()}`;
+      display.innerText = `It's ${player.getName()}'s turn. Your token is ${player.getToken()}`;
     }
   }
 
@@ -87,13 +83,13 @@ const game = (() => {
         render();
         token = players[1].getToken();
 
-        renderMsg(players[1]);
+        displayTurn(players[1]);
       } else if (token == players[1].getToken()) {
         boardContent[isAvailable(e)] = token;
         render();
         token = players[0].getToken();
 
-        renderMsg(players[0]);
+        displayTurn(players[0]);
       }
     } else {
       alert("Invalid move! Try again");
@@ -135,9 +131,15 @@ const game = (() => {
 
     if (win) {
       if (token == "X") {
-        winner = players[1].getName();
+        winner =
+          players[1].getName() == ""
+            ? players[1].getToken()
+            : players[1].getName();
       } else {
-        winner = players[0].getName();
+        winner =
+          players[0].getName() == ""
+            ? players[0].getToken()
+            : players[0].getName();
       }
 
       gameOver(winner);
@@ -154,13 +156,19 @@ const game = (() => {
     }
   }
 
+  function renderMsg(msg) {
+    display.innerText = msg;
+  }
+
   function gameOver(winner) {
     tiles.forEach((tile) => tile.removeEventListener("click", makeMove));
     renderMsg("Game Over");
     if (winner == "tie") {
       alert("It was a tie! Press the restart button to play again");
+      renderMsg("It was a tie!");
     } else {
       alert(`Player ${winner} won! Press the restart button to play again`);
+      renderMsg(`Player ${winner} won!`);
     }
   }
 

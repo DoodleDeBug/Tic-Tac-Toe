@@ -42,6 +42,10 @@ function restartGame() {
   game.clearBoard();
 }
 
+function renderMsg(msg) {
+  display.innerText = msg;
+}
+
 ///////////////// TWO PLAYER GAME //////////////////
 
 const game = (() => {
@@ -52,7 +56,6 @@ const game = (() => {
 
   //bindEvents
   form.addEventListener("submit", getPlayers);
-  // restartBtn.addEventListener("click", restartGame);
 
   function getPlayers(e) {
     e.preventDefault();
@@ -78,16 +81,6 @@ const game = (() => {
       display.innerText = `It's ${player.getName()}'s turn. Your token is ${player.getToken()}`;
     }
   }
-
-  function renderMsg(msg) {
-    display.innerText = msg;
-  }
-
-  // function restartGame() {
-  //   modal.classList.toggle("hidden");
-  //   display.innerText = "";
-  //   clearBoard();
-  // }
 
   function clearForm() {
     document.querySelector("#p1-name").value = "";
@@ -147,24 +140,6 @@ const game = (() => {
 
     checkWin(boardContent, token);
   }
-
-  // function isEqual(...args) {
-  //   let obj = args[0];
-
-  //   for (let i = 1; i < args.length; i++) {
-  //     if (args[i] == "") {
-  //       return false; // dont declare win for empty board/ multiple "" in a row
-  //     }
-
-  //     if (obj == args[i]) {
-  //       continue;
-  //     } else {
-  //       return false;
-  //     }
-  //   }
-
-  //   return true;
-  // }
 
   function checkWin(bC, token) {
     let win =
@@ -230,5 +205,25 @@ const game = (() => {
     gameOver,
     checkTie,
     checkWin,
+    isAvailable,
+    makeMove,
   };
 })();
+
+///////////////// AI //////////////////
+
+// const aiGame = (() => {
+//   //cache DOM
+//   const easy = document.getElementById("easy");
+//   let token;
+
+//   //bindEvents
+//   easy.addEventListener("click", start);
+
+//   function start() {
+//     modal.classList.toggle("hidden");
+//     token = "X";
+//     renderMsg("Your Turn");
+//     console.log("computer");
+//   }
+// })();

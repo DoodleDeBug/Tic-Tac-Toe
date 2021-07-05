@@ -35,15 +35,34 @@
 
 
     <div class="modal-backdrop">
-        <div class="modal-content">
-            <h2>New Game</h2>
-            <form id="form">
-                <label for="p1-name">Player 1:</label><br>
-                <input type="text" name="p1-name" id="p1-name" placeholder="Player 1"><br>
-                <label for="p2-name">Player 2:</label><br>
-                <input type="text" name="p2-name" id="p2-name" placeholder="Player 2"><br>
-                <input id='start' class='start btn-success btn' type="submit" value="Start Game">
-            </form>
+        <div class="modal-content py-4 px-5">
+            <h2 class="display-5 mb-5 text-center text-dark">Game Options</h2>
+            <div class="mb-4">
+                <h3 class="text-center mb-3 fs-3">Vs. Computer</h3>
+                <div class="row justify-content-center my-2 px-5">
+                    <button class="btn btn-danger disabled col px-3">Hard</button>
+                </div>
+                <div class="row justify-content-center my-2 px-5">
+                    <button class="btn btn-warning col px-3">Easy</button>
+                </div>
+            </div>
+            <div class="mb-2">
+                <h3 class="text-center mb-3 fs-3">Two Player</h3>
+                <form id="form">
+                    <div class="form-group mb-1">
+                        <label for="p1-name">Player 1:</label>
+                        <input type="text" class="form-control" name="p1-name" id="p1-name" placeholder="Player 1">
+                    </div>
+                    <div class="form-group mb-1">
+                        <label for="p2-name">Player 2:</label>
+                        <input type="text" class="form-control" name="p2-name" id="p2-name" placeholder="Player 2">
+                    </div>
+                    <!-- <input id='start' class='start btn-success btn' type="submit" value="Start Game"> -->
+                    <div class="row justify-content-center mt-4 px-5">
+                        <button id='start' class="btn-primary btn col" type="submit">Start Game</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </body>

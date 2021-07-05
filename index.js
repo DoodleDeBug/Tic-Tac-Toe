@@ -1,4 +1,4 @@
-/////////////////PLAYER //////////////////
+/////////////////PLAYER FACTORY//////////////////
 
 const player = (name, token) => {
   const getToken = () => token;
@@ -7,20 +7,52 @@ const player = (name, token) => {
   return { getName, getToken };
 };
 
-///////////////// GAME //////////////////
+///////////////// FUNCTIONS //////////////////
+
+function isEqual(...args) {
+  let obj = args[0];
+
+  for (let i = 1; i < args.length; i++) {
+    if (args[i] == "") {
+      return false; // dont declare win for empty board/ multiple "" in a row
+    }
+
+    if (obj == args[i]) {
+      continue;
+    } else {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/////////////////GLOBAL CODE//////////////////
+
+const modal = document.querySelector(".modal-backdrop");
+const restartBtn = document.querySelector(".restart");
+const display = document.getElementById("display");
+
+//bindEvents
+restartBtn.addEventListener("click", restartGame);
+
+function restartGame() {
+  modal.classList.toggle("hidden");
+  display.innerText = "";
+  game.clearBoard();
+}
+
+///////////////// TWO PLAYER GAME //////////////////
 
 const game = (() => {
   //cache DOM
-  const modal = document.querySelector(".modal-backdrop");
   const form = document.querySelector("#form");
-  const restartBtn = document.querySelector(".restart");
-  const display = document.getElementById("display");
   let players = [];
   let token;
 
   //bindEvents
   form.addEventListener("submit", getPlayers);
-  restartBtn.addEventListener("click", restartGame);
+  // restartBtn.addEventListener("click", restartGame);
 
   function getPlayers(e) {
     e.preventDefault();
@@ -51,11 +83,11 @@ const game = (() => {
     display.innerText = msg;
   }
 
-  function restartGame() {
-    modal.classList.toggle("hidden");
-    display.innerText = "";
-    clearBoard();
-  }
+  // function restartGame() {
+  //   modal.classList.toggle("hidden");
+  //   display.innerText = "";
+  //   clearBoard();
+  // }
 
   function clearForm() {
     document.querySelector("#p1-name").value = "";
@@ -116,23 +148,23 @@ const game = (() => {
     checkWin(boardContent, token);
   }
 
-  function isEqual(...args) {
-    let obj = args[0];
+  // function isEqual(...args) {
+  //   let obj = args[0];
 
-    for (let i = 1; i < args.length; i++) {
-      if (args[i] == "") {
-        return false; // dont declare win for empty board/ multiple "" in a row
-      }
+  //   for (let i = 1; i < args.length; i++) {
+  //     if (args[i] == "") {
+  //       return false; // dont declare win for empty board/ multiple "" in a row
+  //     }
 
-      if (obj == args[i]) {
-        continue;
-      } else {
-        return false;
-      }
-    }
+  //     if (obj == args[i]) {
+  //       continue;
+  //     } else {
+  //       return false;
+  //     }
+  //   }
 
-    return true;
-  }
+  //   return true;
+  // }
 
   function checkWin(bC, token) {
     let win =
@@ -192,4 +224,11 @@ const game = (() => {
     tiles.forEach((tile) => tile.addEventListener("click", isAvailable));
     token = players[0].getToken();
   }
+
+  return {
+    clearBoard,
+    gameOver,
+    checkTie,
+    checkWin,
+  };
 })();

@@ -51,7 +51,6 @@ const game = (() => {
     modal.classList.toggle("hidden");
     display.innerText = "";
     clearBoard();
-    // console.log("restarted game");
   }
 
   function clearForm() {
@@ -68,7 +67,7 @@ const game = (() => {
   const tilesArray = Array.from(tiles);
 
   //bind events
-  tiles.forEach((tile) => tile.addEventListener("click", makeMove));
+  tiles.forEach((tile) => tile.addEventListener("click", isAvailable));
 
   function render() {
     tiles.forEach(
@@ -76,23 +75,34 @@ const game = (() => {
     ); // inner text of tile corresponds to boardcontent
   }
 
-  function makeMove(e) {
-    if (isAvailable(e)) {
+  function isAvailable(e) {
+    let position = e.target.classList[1];
+
+    if (e.target.innerText == "") {
+      makeMove(position, token);
       if (token == players[0].getToken()) {
-        boardContent[isAvailable(e)] = token;
-        render();
+        // X
         token = players[1].getToken();
-
-        displayTurn(players[1]);
       } else if (token == players[1].getToken()) {
-        boardContent[isAvailable(e)] = token;
-        render();
+        // O
         token = players[0].getToken();
-
-        displayTurn(players[0]);
       }
     } else {
       alert("Invalid move! Try again");
+    }
+  }
+
+  function makeMove(position, token) {
+    if (token == players[0].getToken()) {
+      // X
+      boardContent[position] = token;
+      render();
+      displayTurn(players[1]);
+    } else if (token == players[1].getToken()) {
+      // O
+      boardContent[position] = token;
+      render();
+      displayTurn(players[0]);
     }
 
     checkWin(boardContent, token);
@@ -132,14 +142,14 @@ const game = (() => {
     if (win) {
       if (token == "X") {
         winner =
-          players[1].getName() == ""
-            ? players[1].getToken()
-            : players[1].getName();
-      } else {
-        winner =
           players[0].getName() == ""
             ? players[0].getToken()
             : players[0].getName();
+      } else {
+        winner =
+          players[1].getName() == ""
+            ? players[1].getToken()
+            : players[1].getName();
       }
 
       gameOver(winner);
@@ -161,7 +171,7 @@ const game = (() => {
   }
 
   function gameOver(winner) {
-    tiles.forEach((tile) => tile.removeEventListener("click", makeMove));
+    tiles.forEach((tile) => tile.removeEventListener("click", isAvailable));
     renderMsg("Game Over");
     if (winner == "tie") {
       alert("It was a tie! Press the restart button to play again");
@@ -172,18 +182,10 @@ const game = (() => {
     }
   }
 
-  function isAvailable(e) {
-    if (e.target.innerText == "") {
-      return e.target.classList[1];
-    } else {
-      return false;
-    }
-  }
-
   function clearBoard() {
     boardContent = ["", "", "", "", "", "", "", "", ""];
     render();
-    tiles.forEach((tile) => tile.addEventListener("click", makeMove));
+    tiles.forEach((tile) => tile.addEventListener("click", isAvailable));
     token = players[0].getToken();
   }
 })();

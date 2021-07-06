@@ -24,6 +24,7 @@ hard.addEventListener("click", whichGame);
 ///////////////// FUNCTIONS //////////////////
 
 function restartGame() {
+  //////////////////////////// global
   modal.classList.toggle("hidden");
   display.innerText = "";
   game.clearBoard();
@@ -31,6 +32,7 @@ function restartGame() {
 }
 
 function whichGame(e) {
+  ///////////////////////////// global
   if (e.target.innerText == "Hard") {
     //hard AI
   } else if (e.target.innerText == "Easy") {
@@ -39,7 +41,6 @@ function whichGame(e) {
     e.preventDefault();
     game.start();
   }
-
   //clear form
   document.querySelector("#p1-name").value = "";
   document.querySelector("#p2-name").value = "";
@@ -48,10 +49,12 @@ function whichGame(e) {
 }
 
 function renderMsg(msg) {
+  ///////////////////////////// global
   display.innerText = msg;
 }
 
 function isEqual(...args) {
+  ///////////////////////////// board related
   let obj = args[0];
 
   for (let i = 1; i < args.length; i++) {
@@ -68,6 +71,7 @@ function isEqual(...args) {
 
   return true;
 }
+
 ///////////////// TWO PLAYER GAME //////////////////
 
 const game = (() => {
@@ -76,6 +80,7 @@ const game = (() => {
   let token;
 
   function start() {
+    ///////////////////////////// game
     players = setPlayers();
     displayTurn(players[0]);
     token = players[0].getToken();
@@ -83,6 +88,7 @@ const game = (() => {
   }
 
   function setPlayers() {
+    ///////////////////////////// game
     let player1 = player(document.querySelector("#p1-name").value, "X");
     let player2 = player(document.querySelector("#p2-name").value, "O");
 
@@ -90,6 +96,7 @@ const game = (() => {
   }
 
   function displayTurn(player) {
+    ///////////////////////////// game
     if (player.getName() == "") {
       display.innerText = `It's ${player.getToken()}'s turn`;
     } else {
@@ -134,6 +141,7 @@ const game = (() => {
   }
 
   function switchPlayerToken() {
+    ///////////////////////////// game
     if (token == players[0].getToken()) {
       // X
       token = players[1].getToken();

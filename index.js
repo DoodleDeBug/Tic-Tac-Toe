@@ -147,6 +147,7 @@ const game = (() => {
   }
 
   function makeMove(e) {
+    ///////////////////////////// game
     let position = e.target.classList[1];
 
     if (isAvailable(e)) {
@@ -158,6 +159,7 @@ const game = (() => {
   }
 
   function move(position, token) {
+    ///////////////////////////// gameboard
     if (token == players[0].getToken()) {
       // X
       boardContent[position] = token;
@@ -174,6 +176,7 @@ const game = (() => {
   }
 
   function checkWin(bC, token) {
+    ///////////////////////////// gameboard
     let win =
       isEqual(bC[0], bC[1], bC[2]) ||
       isEqual(bC[3], bC[4], bC[5]) ||
@@ -200,6 +203,7 @@ const game = (() => {
   }
 
   function checkTie(bC) {
+    ///////////////////////////// gameboard
     let validMovesLeft = bC.includes("");
 
     if (!validMovesLeft) {
@@ -208,6 +212,7 @@ const game = (() => {
   }
 
   function gameOver(winner) {
+    ///////////////////////////// gameboard
     removeTileEventListener();
     renderMsg("Game Over");
     if (winner == "tie") {
@@ -220,21 +225,16 @@ const game = (() => {
   }
 
   function clearBoard() {
+    ///////////////////////////// gameboard
     boardContent = ["", "", "", "", "", "", "", "", ""];
     render();
   }
 
   return {
     clearBoard,
-    gameOver,
-    checkTie,
-    checkWin,
-    isAvailable,
-    makeMove,
     start,
     addTileEventListener,
     removeTileEventListener,
-    switchPlayerToken,
   };
 })();
 

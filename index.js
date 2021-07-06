@@ -30,11 +30,17 @@ function isEqual(...args) {
 /////////////////GLOBAL CODE//////////////////
 
 const modal = document.querySelector(".modal-backdrop");
+const form = document.querySelector("#form");
+const easy = document.getElementById("easy");
+const hard = document.getElementById("hard");
 const restartBtn = document.querySelector(".restart");
 const display = document.getElementById("display");
 
 //bindEvents
 restartBtn.addEventListener("click", restartGame);
+form.addEventListener("submit", whichGame);
+easy.addEventListener("click", whichGame);
+hard.addEventListener("click", whichGame);
 
 function restartGame() {
   modal.classList.toggle("hidden");
@@ -46,25 +52,32 @@ function renderMsg(msg) {
   display.innerText = msg;
 }
 
+function whichGame(e) {
+  console.log("gameoption");
+  if (e.target.innerText == "Hard") {
+    //hard AI
+  } else if (e.target.innerText == "Easy") {
+    aiGame.start();
+  } else {
+    e.preventDefault();
+    game.getPlayers();
+  }
+}
+
 ///////////////// TWO PLAYER GAME //////////////////
 
 const game = (() => {
   //cache DOM
-  const form = document.querySelector("#form");
   let players = [];
   let token;
 
-  //bindEvents
-  form.addEventListener("submit", getPlayers);
-
-  function getPlayers(e) {
-    e.preventDefault();
-
+  function getPlayers() {
     players = setPlayers();
     displayTurn(players[0]);
     token = players[0].getToken();
     clearForm();
     modal.classList.toggle("hidden");
+    addTileEventListener();
   }
 
   function setPlayers() {
@@ -96,7 +109,9 @@ const game = (() => {
   const tilesArray = Array.from(tiles);
 
   //bind events
-  tiles.forEach((tile) => tile.addEventListener("click", isAvailable));
+  function addTileEventListener() {
+    tiles.forEach((tile) => tile.addEventListener("click", isAvailable));
+  }
 
   function render() {
     tiles.forEach(
@@ -196,8 +211,8 @@ const game = (() => {
   function clearBoard() {
     boardContent = ["", "", "", "", "", "", "", "", ""];
     render();
-    tiles.forEach((tile) => tile.addEventListener("click", isAvailable));
-    token = players[0].getToken();
+    // tiles.forEach((tile) => tile.addEventListener("click", isAvailable));
+    // token = players[0].getToken();
   }
 
   return {
@@ -207,23 +222,27 @@ const game = (() => {
     checkWin,
     isAvailable,
     makeMove,
+    getPlayers,
+    clearForm,
   };
 })();
 
 ///////////////// AI //////////////////
 
-// const aiGame = (() => {
-//   //cache DOM
-//   const easy = document.getElementById("easy");
-//   let token;
+const aiGame = (() => {
+  // cache DOM
+  let token;
 
-//   //bindEvents
-//   easy.addEventListener("click", start);
+  //bindEvents
 
-//   function start() {
-//     modal.classList.toggle("hidden");
-//     token = "X";
-//     renderMsg("Your Turn");
-//     console.log("computer");
-//   }
-// })();
+  function start() {
+    game.clearForm();
+    modal.classList.toggle("hidden");
+    token = "X";
+    renderMsg("Your Turn");
+  }
+
+  return {
+    start,
+  };
+})();

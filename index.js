@@ -60,7 +60,7 @@ function whichGame(e) {
     aiGame.start();
   } else {
     e.preventDefault();
-    game.getPlayers();
+    game.start();
   }
 }
 
@@ -71,7 +71,7 @@ const game = (() => {
   let players = [];
   let token;
 
-  function getPlayers() {
+  function start() {
     players = setPlayers();
     displayTurn(players[0]);
     token = players[0].getToken();
@@ -222,8 +222,9 @@ const game = (() => {
     checkWin,
     isAvailable,
     makeMove,
-    getPlayers,
+    start,
     clearForm,
+    addTileEventListener,
   };
 })();
 

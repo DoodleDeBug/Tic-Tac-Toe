@@ -46,6 +46,7 @@ function restartGame() {
   modal.classList.toggle("hidden");
   display.innerText = "";
   game.clearBoard();
+  game.removeTileEventListener();
 }
 
 function renderMsg(msg) {
@@ -62,6 +63,12 @@ function whichGame(e) {
     e.preventDefault();
     game.start();
   }
+
+  //clear form
+  document.querySelector("#p1-name").value = "";
+  document.querySelector("#p2-name").value = "";
+
+  modal.classList.toggle("hidden");
 }
 
 ///////////////// TWO PLAYER GAME //////////////////
@@ -75,8 +82,6 @@ const game = (() => {
     players = setPlayers();
     displayTurn(players[0]);
     token = players[0].getToken();
-    clearForm();
-    modal.classList.toggle("hidden");
     addTileEventListener();
   }
 
@@ -95,11 +100,6 @@ const game = (() => {
     }
   }
 
-  function clearForm() {
-    document.querySelector("#p1-name").value = "";
-    document.querySelector("#p2-name").value = "";
-  }
-
   ///////////////// GAMEBOARD //////////////////
 
   let boardContent = ["", "", "", "", "", "", "", "", ""];
@@ -111,6 +111,11 @@ const game = (() => {
   //bind events
   function addTileEventListener() {
     tiles.forEach((tile) => tile.addEventListener("click", isAvailable));
+  }
+
+  //remove tile click event listener
+  function removeTileEventListener() {
+    tiles.forEach((tile) => tile.removeEventListener("click", isAvailable));
   }
 
   function render() {
@@ -197,7 +202,7 @@ const game = (() => {
   }
 
   function gameOver(winner) {
-    tiles.forEach((tile) => tile.removeEventListener("click", isAvailable));
+    removeTileEventListener();
     renderMsg("Game Over");
     if (winner == "tie") {
       alert("It was a tie! Press the restart button to play again");
@@ -211,8 +216,6 @@ const game = (() => {
   function clearBoard() {
     boardContent = ["", "", "", "", "", "", "", "", ""];
     render();
-    // tiles.forEach((tile) => tile.addEventListener("click", isAvailable));
-    // token = players[0].getToken();
   }
 
   return {
@@ -223,8 +226,9 @@ const game = (() => {
     isAvailable,
     makeMove,
     start,
-    clearForm,
     addTileEventListener,
+    removeTileEventListener,
+    switchPlayerToken,
   };
 })();
 
@@ -234,11 +238,7 @@ const aiGame = (() => {
   // cache DOM
   let token;
 
-  //bindEvents
-
   function start() {
-    game.clearForm();
-    modal.classList.toggle("hidden");
     token = "X";
     renderMsg("Your Turn");
   }

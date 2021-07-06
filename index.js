@@ -107,37 +107,32 @@ const game = (() => {
   ///////////////// GAMEBOARD //////////////////
 
   //variables
-  let boardContent = ["", "", "", "", "", "", "", "", ""];
+  let boardContent = ["", "", "", "", "", "", "", "", ""]; ///////////////////////////// gameboard
 
   // cache DOM
-  const tiles = document.querySelectorAll(".tile");
+  const tiles = document.querySelectorAll(".tile"); ///////////////////////////// gameboard
   const tilesArray = Array.from(tiles);
 
   //bind events
   function addTileEventListener() {
-    tiles.forEach((tile) => tile.addEventListener("click", isAvailable));
+    tiles.forEach((tile) => tile.addEventListener("click", makeMove)); ///////////////////////////// gameboard
   }
 
   //remove tile click event listener
   function removeTileEventListener() {
-    tiles.forEach((tile) => tile.removeEventListener("click", isAvailable));
+    tiles.forEach((tile) => tile.removeEventListener("click", makeMove)); ///////////////////////////// gameboard
   }
 
   function render() {
+    ///////////////////////////// gameboard
     tiles.forEach(
       (tile) => (tile.innerText = boardContent[tilesArray.indexOf(tile)])
     ); // inner text of tile corresponds to boardcontent
   }
 
   function isAvailable(e) {
-    let position = e.target.classList[1];
-
-    if (e.target.innerText == "") {
-      makeMove(position, token);
-      switchPlayerToken();
-    } else {
-      alert("Invalid move! Try again");
-    }
+    ///////////////////////////// gameboard
+    return e.target.innerText == "" ? true : false;
   }
 
   function switchPlayerToken() {
@@ -151,7 +146,18 @@ const game = (() => {
     }
   }
 
-  function makeMove(position, token) {
+  function makeMove(e) {
+    let position = e.target.classList[1];
+
+    if (isAvailable(e)) {
+      move(position, token);
+      switchPlayerToken();
+    } else {
+      alert("Invalid move! Try again");
+    }
+  }
+
+  function move(position, token) {
     if (token == players[0].getToken()) {
       // X
       boardContent[position] = token;

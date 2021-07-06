@@ -1,5 +1,4 @@
 /////////////////PLAYER FACTORY//////////////////
-
 const player = (name, token) => {
   const getToken = () => token;
   const getName = () => name;
@@ -7,7 +6,50 @@ const player = (name, token) => {
   return { getName, getToken };
 };
 
+/////////////////GLOBAL CODE//////////////////
+
+const modal = document.querySelector(".modal-backdrop");
+const form = document.querySelector("#form");
+const easy = document.getElementById("easy");
+const hard = document.getElementById("hard");
+const restartBtn = document.querySelector(".restart");
+const display = document.getElementById("display");
+
+//bindEvents
+restartBtn.addEventListener("click", restartGame);
+form.addEventListener("submit", whichGame);
+easy.addEventListener("click", whichGame);
+hard.addEventListener("click", whichGame);
+
 ///////////////// FUNCTIONS //////////////////
+
+function restartGame() {
+  modal.classList.toggle("hidden");
+  display.innerText = "";
+  game.clearBoard();
+  game.removeTileEventListener();
+}
+
+function whichGame(e) {
+  if (e.target.innerText == "Hard") {
+    //hard AI
+  } else if (e.target.innerText == "Easy") {
+    aiGame.start();
+  } else {
+    e.preventDefault();
+    game.start();
+  }
+
+  //clear form
+  document.querySelector("#p1-name").value = "";
+  document.querySelector("#p2-name").value = "";
+
+  modal.classList.toggle("hidden");
+}
+
+function renderMsg(msg) {
+  display.innerText = msg;
+}
 
 function isEqual(...args) {
   let obj = args[0];
@@ -26,51 +68,6 @@ function isEqual(...args) {
 
   return true;
 }
-
-/////////////////GLOBAL CODE//////////////////
-
-const modal = document.querySelector(".modal-backdrop");
-const form = document.querySelector("#form");
-const easy = document.getElementById("easy");
-const hard = document.getElementById("hard");
-const restartBtn = document.querySelector(".restart");
-const display = document.getElementById("display");
-
-//bindEvents
-restartBtn.addEventListener("click", restartGame);
-form.addEventListener("submit", whichGame);
-easy.addEventListener("click", whichGame);
-hard.addEventListener("click", whichGame);
-
-function restartGame() {
-  modal.classList.toggle("hidden");
-  display.innerText = "";
-  game.clearBoard();
-  game.removeTileEventListener();
-}
-
-function renderMsg(msg) {
-  display.innerText = msg;
-}
-
-function whichGame(e) {
-  console.log("gameoption");
-  if (e.target.innerText == "Hard") {
-    //hard AI
-  } else if (e.target.innerText == "Easy") {
-    aiGame.start();
-  } else {
-    e.preventDefault();
-    game.start();
-  }
-
-  //clear form
-  document.querySelector("#p1-name").value = "";
-  document.querySelector("#p2-name").value = "";
-
-  modal.classList.toggle("hidden");
-}
-
 ///////////////// TWO PLAYER GAME //////////////////
 
 const game = (() => {
@@ -102,6 +99,7 @@ const game = (() => {
 
   ///////////////// GAMEBOARD //////////////////
 
+  //variables
   let boardContent = ["", "", "", "", "", "", "", "", ""];
 
   // cache DOM
@@ -175,16 +173,10 @@ const game = (() => {
     let winner;
 
     if (win) {
-      if (token == "X") {
-        winner =
-          players[0].getName() == ""
-            ? players[0].getToken()
-            : players[0].getName();
+      if (token == players[0].getToken()) {
+        winner = players[0].getName() == "" ? token : players[0].getName();
       } else {
-        winner =
-          players[1].getName() == ""
-            ? players[1].getToken()
-            : players[1].getName();
+        winner = players[1].getName() == "" ? token : players[1].getName();
       }
 
       gameOver(winner);
@@ -235,12 +227,12 @@ const game = (() => {
 ///////////////// AI //////////////////
 
 const aiGame = (() => {
-  // cache DOM
+  // variables
   let token;
 
   function start() {
     token = "X";
-    renderMsg("Your Turn");
+    renderMsg(`Your Turn. Your token is ${token}`);
   }
 
   return {

@@ -205,7 +205,7 @@ const gameBoard = (players) => {
       [bC[2], bC[4], bC[6]],
     ];
 
-    let winCodes = [012, 345, 678, 036, 147, 258, 048, 246];
+    let winCodes = [012, 345, 678, 036, 147, 258, "048", 246];
     let winner;
 
     winOptions.forEach((option) => {

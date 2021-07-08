@@ -210,13 +210,15 @@ const gameBoard = (players) => {
               players[1].getName() == "" ? token : players[1].getName());
 
         let winningCombo = winOptions[winOptions.indexOf(option)];
-        console.log(winningCombo);
+        console.log(winningCombo[0]);
 
         gameOver(winner);
       }
     });
 
-    checkTie(bC);
+    if (!winner) {
+      checkTie(bC);
+    }
   }
 
   function checkTie(bC) {

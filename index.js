@@ -297,6 +297,25 @@ const aiGame = (() => {
     renderMsg(`Your Turn. Your token is ${token}`);
   }
 
+  function PlayerMove(e) {
+    ///////////////////////////// game
+    let position = e.target.classList[1];
+
+    if (gameBoard().isAvailable(e)) {
+      gameBoard().move(position, token);
+      switchToken();
+      computerMove();
+    } else {
+      alert("Invalid move! Try again");
+    }
+  }
+
+  function switchToken() {
+    token == "X" ? (token = "O") : (token = "X");
+  }
+
+  function computerMove(e) {}
+
   return {
     start,
   };

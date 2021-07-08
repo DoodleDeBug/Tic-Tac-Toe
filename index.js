@@ -56,7 +56,7 @@ function renderMsg(msg) {
   display.innerText = msg;
 }
 
-function isEqual(...args) {
+function isEqual(args) {
   ///////////////////////////// board related
   let obj = args[0];
 
@@ -152,16 +152,16 @@ const game = (() => {
 const gameBoard = (players) => {
   //variables
   // let boardContent = ["", "", "", "", "", "", "", "", ""]; ///////////////////////////// gameboard
+  const tilesArray = Array.from(tiles);
 
   // cache DOM
   // const tiles = document.querySelectorAll(".tile"); ///////////////////////////// gameboard
-  const tilesArray = Array.from(tiles);
 
   function render() {
     ///////////////////////////// gameboard
     tiles.forEach(
       (tile) => (tile.innerText = boardContent[tilesArray.indexOf(tile)])
-    ); // inner text of tile corresponds to boardcontent
+    );
   }
 
   function isAvailable(e) {
@@ -188,29 +188,35 @@ const gameBoard = (players) => {
 
   function checkWin(bC, token) {
     ///////////////////////////// gameboard
-    let win =
-      isEqual(bC[0], bC[1], bC[2]) ||
-      isEqual(bC[3], bC[4], bC[5]) ||
-      isEqual(bC[6], bC[7], bC[8]) ||
-      isEqual(bC[0], bC[3], bC[6]) ||
-      isEqual(bC[1], bC[4], bC[7]) ||
-      isEqual(bC[2], bC[5], bC[8]) ||
-      isEqual(bC[0], bC[4], bC[8]) ||
-      isEqual(bC[2], bC[4], bC[6]);
+
+    let winOptions = [
+      [bC[0], bC[1], bC[2]],
+      [bC[3], bC[4], bC[5]],
+      [bC[6], bC[7], bC[8]],
+      [bC[0], bC[3], bC[6]],
+      [bC[1], bC[4], bC[7]],
+      [bC[2], bC[5], bC[8]],
+      [bC[0], bC[4], bC[8]],
+      [bC[2], bC[4], bC[6]],
+    ];
 
     let winner;
 
-    if (win) {
-      if (token == players[0].getToken()) {
-        winner = players[0].getName() == "" ? token : players[0].getName();
-      } else {
-        winner = players[1].getName() == "" ? token : players[1].getName();
-      }
+    winOptions.forEach((option) => {
+      if (isEqual(option) == true) {
+        token == players[0].getToken()
+          ? (winner = players[0].getName() == "" ? token : players[0].getName())
+          : (winner =
+              players[1].getName() == "" ? token : players[1].getName());
 
-      gameOver(winner);
-    } else {
-      checkTie(bC);
-    }
+        let winningCombo = winOptions[winOptions.indexOf(option)];
+        console.log(winningCombo);
+
+        gameOver(winner);
+      }
+    });
+
+    checkTie(bC);
   }
 
   function checkTie(bC) {
@@ -219,6 +225,7 @@ const gameBoard = (players) => {
 
     if (!validMovesLeft) {
       gameOver("tie");
+      return;
     }
   }
 

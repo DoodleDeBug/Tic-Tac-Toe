@@ -200,6 +200,7 @@ const gameBoard = (players) => {
       [bC[2], bC[4], bC[6]],
     ];
 
+    let winCodes = [012, 345, 678, 036, 147, 258, 048, 246];
     let winner;
 
     winOptions.forEach((option) => {
@@ -209,16 +210,39 @@ const gameBoard = (players) => {
           : (winner =
               players[1].getName() == "" ? token : players[1].getName());
 
-        let winningCombo = winOptions[winOptions.indexOf(option)];
-        console.log(winningCombo[0]);
+        let winningCombo = winCodes[winOptions.indexOf(option)];
+        console.log(winningCombo);
 
         gameOver(winner);
+        highlightWin(winningCombo);
       }
     });
 
     if (!winner) {
       checkTie(bC);
     }
+  }
+
+  function highlightWin(code) {
+    let codeArray = code.toString().split("");
+
+    let combo = [
+      tilesArray[codeArray[0]],
+      tilesArray[codeArray[1]],
+      tilesArray[codeArray[2]],
+    ];
+
+    combo.forEach((tile) => {
+      addHighlight(tile);
+    });
+  }
+
+  function addHighlight(tile) {
+    tile.classList.add("bg-danger");
+  }
+
+  function removeHighlight(tile) {
+    tile.classList.remove("bg-danger");
   }
 
   function checkTie(bC) {
@@ -254,6 +278,7 @@ const gameBoard = (players) => {
     clearBoard,
     isAvailable,
     move,
+    removeHighlight,
   };
 };
 

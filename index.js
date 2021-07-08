@@ -15,6 +15,9 @@ const hard = document.getElementById("hard");
 const restartBtn = document.querySelector(".restart");
 const display = document.getElementById("display");
 
+const tiles = document.querySelectorAll(".tile"); ///////////////////////////// gameboard
+let boardContent = ["", "", "", "", "", "", "", "", ""]; ///////////////////////////// gameboard
+
 //bindEvents
 restartBtn.addEventListener("click", restartGame);
 form.addEventListener("submit", whichGame);
@@ -27,7 +30,7 @@ function restartGame() {
   //////////////////////////// global
   modal.classList.toggle("hidden");
   display.innerText = "";
-  game.clearBoard();
+  gameBoard().clearBoard();
   game.removeTileEventListener();
 }
 
@@ -82,9 +85,19 @@ const game = (() => {
   function start() {
     ///////////////////////////// game
     players = setPlayers();
-    displayTurn(players[0]);
     token = players[0].getToken();
+    displayTurn(players[0]);
     addTileEventListener();
+  }
+
+  //bind events
+  function addTileEventListener() {
+    tiles.forEach((tile) => tile.addEventListener("click", makeMove)); ///////////////////////////// game
+  }
+
+  //remove tile click event listener
+  function removeTileEventListener() {
+    tiles.forEach((tile) => tile.removeEventListener("click", makeMove)); ///////////////////////////// game
   }
 
   function setPlayers() {
@@ -104,37 +117,6 @@ const game = (() => {
     }
   }
 
-  ///////////////// GAMEBOARD //////////////////
-
-  //variables
-  let boardContent = ["", "", "", "", "", "", "", "", ""]; ///////////////////////////// gameboard
-
-  // cache DOM
-  const tiles = document.querySelectorAll(".tile"); ///////////////////////////// gameboard
-  const tilesArray = Array.from(tiles);
-
-  //bind events
-  function addTileEventListener() {
-    tiles.forEach((tile) => tile.addEventListener("click", makeMove)); ///////////////////////////// gameboard
-  }
-
-  //remove tile click event listener
-  function removeTileEventListener() {
-    tiles.forEach((tile) => tile.removeEventListener("click", makeMove)); ///////////////////////////// gameboard
-  }
-
-  function render() {
-    ///////////////////////////// gameboard
-    tiles.forEach(
-      (tile) => (tile.innerText = boardContent[tilesArray.indexOf(tile)])
-    ); // inner text of tile corresponds to boardcontent
-  }
-
-  function isAvailable(e) {
-    ///////////////////////////// gameboard
-    return e.target.innerText == "" ? true : false;
-  }
-
   function switchPlayerToken() {
     ///////////////////////////// game
     if (token == players[0].getToken()) {
@@ -150,12 +132,41 @@ const game = (() => {
     ///////////////////////////// game
     let position = e.target.classList[1];
 
-    if (isAvailable(e)) {
-      move(position, token);
+    if (gameBoard(players).isAvailable(e)) {
+      gameBoard(players).move(position, token);
       switchPlayerToken();
     } else {
       alert("Invalid move! Try again");
     }
+  }
+
+  return {
+    start,
+    addTileEventListener,
+    removeTileEventListener,
+    displayTurn,
+  };
+})();
+
+///////////////// GAMEBOARD //////////////////
+const gameBoard = (players) => {
+  //variables
+  // let boardContent = ["", "", "", "", "", "", "", "", ""]; ///////////////////////////// gameboard
+
+  // cache DOM
+  // const tiles = document.querySelectorAll(".tile"); ///////////////////////////// gameboard
+  const tilesArray = Array.from(tiles);
+
+  function render() {
+    ///////////////////////////// gameboard
+    tiles.forEach(
+      (tile) => (tile.innerText = boardContent[tilesArray.indexOf(tile)])
+    ); // inner text of tile corresponds to boardcontent
+  }
+
+  function isAvailable(e) {
+    ///////////////////////////// gameboard
+    return e.target.innerText == "" ? true : false;
   }
 
   function move(position, token) {
@@ -164,12 +175,12 @@ const game = (() => {
       // X
       boardContent[position] = token;
       render();
-      displayTurn(players[1]);
+      game.displayTurn(players[1]);
     } else if (token == players[1].getToken()) {
       // O
       boardContent[position] = token;
       render();
-      displayTurn(players[0]);
+      game.displayTurn(players[0]);
     }
 
     checkWin(boardContent, token);
@@ -213,7 +224,7 @@ const game = (() => {
 
   function gameOver(winner) {
     ///////////////////////////// gameboard
-    removeTileEventListener();
+    game.removeTileEventListener();
     renderMsg("Game Over");
     if (winner == "tie") {
       alert("It was a tie! Press the restart button to play again");
@@ -232,11 +243,10 @@ const game = (() => {
 
   return {
     clearBoard,
-    start,
-    addTileEventListener,
-    removeTileEventListener,
+    isAvailable,
+    move,
   };
-})();
+};
 
 ///////////////// AI //////////////////
 

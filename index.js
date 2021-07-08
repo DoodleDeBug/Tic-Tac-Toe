@@ -32,6 +32,11 @@ function restartGame() {
   display.innerText = "";
   gameBoard().clearBoard();
   game.removeTileEventListener();
+  tiles.forEach((tile) => {
+    if (Array.from(tile.classList).includes("bg-danger")) {
+      gameBoard().removeHighlight(tile);
+    }
+  });
 }
 
 function whichGame(e) {
@@ -211,7 +216,6 @@ const gameBoard = (players) => {
               players[1].getName() == "" ? token : players[1].getName());
 
         let winningCombo = winCodes[winOptions.indexOf(option)];
-        console.log(winningCombo);
 
         gameOver(winner);
         highlightWin(winningCombo);

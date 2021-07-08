@@ -18,6 +18,8 @@ const display = document.getElementById("display");
 const tiles = document.querySelectorAll(".tile"); ///////////////////////////// gameboard
 let boardContent = ["", "", "", "", "", "", "", "", ""]; ///////////////////////////// gameboard
 
+let gameOption;
+
 //bindEvents
 restartBtn.addEventListener("click", restartGame);
 form.addEventListener("submit", whichGame);
@@ -32,20 +34,26 @@ function restartGame() {
   display.innerText = "";
   gameBoard().clearBoard();
   game.removeTileEventListener();
+  aiGame.removeTileEventListener();
   tiles.forEach((tile) => {
     if (Array.from(tile.classList).includes("bg-danger")) {
       gameBoard().removeHighlight(tile);
     }
   });
+
+  gameOption = "";
 }
 
 function whichGame(e) {
   ///////////////////////////// global
   if (e.target.innerText == "Hard") {
+    gameOption = "hard";
     //hard AI
   } else if (e.target.innerText == "Easy") {
+    gameOption = "easy";
     aiGame.start();
   } else {
+    gameOption = "twoPlayer";
     e.preventDefault();
     game.start();
   }
@@ -212,7 +220,14 @@ const gameBoard = (players) => {
 
     winOptions.forEach((option) => {
       if (isEqual(option) == true) {
-        winner = game.assessWinner();
+        if (gameOption == "twoPlayer") {
+          winner = game.assessWinner();
+          console.log(winner);
+        } else if (gameOption == "easy") {
+          console.log("AI game");
+        } else if (gameOption == "hard") {
+          // some code
+        }
 
         let winningCombo = winCodes[winOptions.indexOf(option)];
 

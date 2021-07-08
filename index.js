@@ -147,11 +147,20 @@ const game = (() => {
     }
   }
 
+  function assessWinner() {
+    return token == players[0].getToken()
+      ? players[0].getName() == ""
+        ? token
+        : players[0].getName()
+      : players[1].getName() == ""
+      ? token
+      : players[1].getName();
+  }
+
   return {
     start,
-    addTileEventListener,
     removeTileEventListener,
-    displayTurn,
+    assessWinner,
   };
 })();
 
@@ -203,10 +212,7 @@ const gameBoard = (players) => {
 
     winOptions.forEach((option) => {
       if (isEqual(option) == true) {
-        token == players[0].getToken()
-          ? (winner = players[0].getName() == "" ? token : players[0].getName())
-          : (winner =
-              players[1].getName() == "" ? token : players[1].getName());
+        winner = game.assessWinner();
 
         let winningCombo = winCodes[winOptions.indexOf(option)];
 
@@ -287,10 +293,21 @@ const aiGame = (() => {
 
   function start() {
     token = "X";
-    renderMsg(`Your Turn. Your token is ${token}`);
+    playerTurn();
+    addTileEventListener();
   }
 
-  function PlayerMove(e) {
+  //bind events
+  function addTileEventListener() {
+    tiles.forEach((tile) => tile.addEventListener("click", playerMove)); ///////////////////////////// game
+  }
+
+  //remove tile click event listener
+  function removeTileEventListener() {
+    tiles.forEach((tile) => tile.removeEventListener("click", playerMove)); ///////////////////////////// game
+  }
+
+  function playerMove(e) {
     ///////////////////////////// game
     let position = e.target.classList[1];
 
@@ -303,13 +320,18 @@ const aiGame = (() => {
     }
   }
 
+  function computerMove(e) {}
+
   function switchToken() {
     token == "X" ? (token = "O") : (token = "X");
   }
 
-  function computerMove(e) {}
+  function playerTurn() {
+    renderMsg(`Your Turn. Your token is ${token}`);
+  }
 
   return {
     start,
+    removeTileEventListener,
   };
 })();

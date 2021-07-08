@@ -90,7 +90,7 @@ const game = (() => {
   function start() {
     ///////////////////////////// game
     players = setPlayers();
-    token = players[0].getToken();
+    token = players[1].getToken();
     displayTurn(players[0]);
     addTileEventListener();
   }
@@ -122,14 +122,16 @@ const game = (() => {
     }
   }
 
-  function switchPlayerToken() {
+  function switchPlayer() {
     ///////////////////////////// game
     if (token == players[0].getToken()) {
       // X
       token = players[1].getToken();
+      displayTurn(players[0]);
     } else if (token == players[1].getToken()) {
       // O
       token = players[0].getToken();
+      displayTurn(players[1]);
     }
   }
 
@@ -138,8 +140,8 @@ const game = (() => {
     let position = e.target.classList[1];
 
     if (gameBoard(players).isAvailable(e)) {
+      switchPlayer();
       gameBoard(players).move(position, token);
-      switchPlayerToken();
     } else {
       alert("Invalid move! Try again");
     }
@@ -176,18 +178,9 @@ const gameBoard = (players) => {
 
   function move(position, token) {
     ///////////////////////////// gameboard
-    if (token == players[0].getToken()) {
-      // X
-      boardContent[position] = token;
-      render();
-      game.displayTurn(players[1]);
-    } else if (token == players[1].getToken()) {
-      // O
-      boardContent[position] = token;
-      render();
-      game.displayTurn(players[0]);
-    }
 
+    boardContent[position] = token;
+    render();
     checkWin(boardContent, token);
   }
 
@@ -205,7 +198,7 @@ const gameBoard = (players) => {
       [bC[2], bC[4], bC[6]],
     ];
 
-    let winCodes = [012, 345, 678, 036, 147, 258, "048", 246];
+    let winCodes = [012, 345, 678, "036", 147, 258, "048", 246];
     let winner;
 
     winOptions.forEach((option) => {

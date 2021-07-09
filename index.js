@@ -150,6 +150,7 @@ const game = (() => {
     if (gameBoard(players).isAvailable(e)) {
       switchPlayer();
       gameBoard(players).move(position, token);
+      gameBoard(players).checkWin(boardContent, token);
     } else {
       alert("Invalid move! Try again");
     }
@@ -203,7 +204,7 @@ const gameBoard = (players) => {
 
     boardContent[position] = token;
     render();
-    checkWin(boardContent, token);
+    // checkWin(boardContent, token);
   }
 
   function checkWin(bC, token) {
@@ -229,6 +230,7 @@ const gameBoard = (players) => {
           winner = game.assessWinner();
           console.log(winner);
         } else if (gameOption == "easy") {
+          token == "X" ? (winner = "player") : (winner = "computer");
           console.log("AI game");
         } else if (gameOption == "hard") {
           // some code
@@ -281,10 +283,17 @@ const gameBoard = (players) => {
   function gameOver(winner) {
     ///////////////////////////// gameboard
     game.removeTileEventListener();
+    aiGame.removeTileEventListener();
     renderMsg("Game Over");
     if (winner == "tie") {
       alert("It was a tie! Press the restart button to play again");
       renderMsg("It was a tie!");
+    } else if (winner == "player") {
+      alert("You Won! Press the restart button to play again");
+      renderMsg("You beat the Computer!");
+    } else if (winner == "computer") {
+      alert("The Computer won! Press the restart button to play again");
+      renderMsg("You were beaten by the Computer");
     } else {
       alert(`Player ${winner} won! Press the restart button to play again`);
       renderMsg(`Player ${winner} won!`);
@@ -303,6 +312,7 @@ const gameBoard = (players) => {
     isAvailableComputer,
     move,
     removeHighlight,
+    checkWin,
   };
 };
 
@@ -349,6 +359,7 @@ const aiGame = (() => {
       gameBoard().move(position, token);
       switchToken();
       displayTurn();
+      gameBoard().checkWin(boardContent, token);
     } else {
       position = Math.floor(Math.random() * 9);
 
@@ -356,25 +367,8 @@ const aiGame = (() => {
         gameBoard().move(position, token);
         switchToken();
         displayTurn();
+        gameBoard().checkWin(boardContent, token);
       }
-    }
-  }
-
-  // if (gameBoard().isAvailableComputer(position)) {
-  //   gameBoard().move(position, token);
-  //   switchToken();
-  //   displayTurn();
-  // } else {
-  //   alert("Invalid move! Try again");
-  // }
-
-  function computerMoveLoop() {
-    let position = Math.floor(Math.random() * 9);
-
-    if (gameBoard().isAvailableComputer(position)) {
-      gameBoard().move(position, token);
-      switchToken();
-      displayTurn();
     }
   }
 

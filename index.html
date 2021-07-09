@@ -40,10 +40,14 @@
             <div class="mb-4">
                 <h3 class="text-center mb-3 fs-3">Vs. Computer</h3>
                 <div class="row justify-content-center my-2 px-5">
-                    <button id="hard" class="btn btn-danger disabled col px-3">Hard</button>
+                    <span class="tt text-center" data-bs-placement="top" title="Work In Progress - Disabled for now">
+                        <button id="hard" class="btn btn-danger disabled col px-3">Hard</button>
+                    </span>
                 </div>
                 <div class="row justify-content-center my-2 px-5">
-                    <button id="easy" class="btn btn-warning col px-3">Easy</button>
+                    <span class="tt text-center" data-bs-placement="top" title="Work In Progress - Disabled for now">
+                        <button id="easy" class="btn btn-warning col px-3 disabled">Easy</button>
+                    </span>
                 </div>
             </div>
             <div class="mb-2">
@@ -57,7 +61,6 @@
                         <label for="p2-name">Player 2:</label>
                         <input type="text" class="form-control" name="p2-name" id="p2-name" placeholder="Player 2">
                     </div>
-                    <!-- <input id='start' class='start btn-success btn' type="submit" value="Start Game"> -->
                     <div class="row justify-content-center mt-4 px-5">
                         <button id='start' class="btn-primary btn col" type="submit">Start Game</button>
                     </div>
@@ -71,5 +74,11 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
     crossorigin="anonymous"></script>
+<script>
+    const tooltips = document.querySelectorAll(".tt");
+    tooltips.forEach(t => {
+        new bootstrap.Tooltip(t)
+    })
+</script>
 
 </html>

@@ -193,6 +193,11 @@ const gameBoard = (players) => {
     return e.target.innerText == "" ? true : false;
   }
 
+  function isAvailableComputer(position) {
+    ///////////////////////////// gameboard
+    return tilesArray[position].innerText == "" ? true : false;
+  }
+
   function move(position, token) {
     ///////////////////////////// gameboard
 
@@ -295,6 +300,7 @@ const gameBoard = (players) => {
   return {
     clearBoard,
     isAvailable,
+    isAvailableComputer,
     move,
     removeHighlight,
   };
@@ -308,7 +314,7 @@ const aiGame = (() => {
 
   function start() {
     token = "X";
-    playerTurn();
+    displayTurn();
     addTileEventListener();
   }
 
@@ -329,20 +335,57 @@ const aiGame = (() => {
     if (gameBoard().isAvailable(e)) {
       gameBoard().move(position, token);
       switchToken();
+      displayTurn();
       computerMove();
     } else {
       alert("Invalid move! Try again");
     }
   }
 
-  function computerMove(e) {}
+  function computerMove() {
+    let position = Math.floor(Math.random() * 9);
+
+    if (gameBoard().isAvailableComputer(position)) {
+      gameBoard().move(position, token);
+      switchToken();
+      displayTurn();
+    } else {
+      position = Math.floor(Math.random() * 9);
+
+      if (gameBoard().isAvailableComputer(position)) {
+        gameBoard().move(position, token);
+        switchToken();
+        displayTurn();
+      }
+    }
+  }
+
+  // if (gameBoard().isAvailableComputer(position)) {
+  //   gameBoard().move(position, token);
+  //   switchToken();
+  //   displayTurn();
+  // } else {
+  //   alert("Invalid move! Try again");
+  // }
+
+  function computerMoveLoop() {
+    let position = Math.floor(Math.random() * 9);
+
+    if (gameBoard().isAvailableComputer(position)) {
+      gameBoard().move(position, token);
+      switchToken();
+      displayTurn();
+    }
+  }
 
   function switchToken() {
     token == "X" ? (token = "O") : (token = "X");
   }
 
-  function playerTurn() {
-    renderMsg(`Your Turn. Your token is ${token}`);
+  function displayTurn() {
+    token == "X"
+      ? renderMsg(`It's your turn. Your token is ${token}`)
+      : renderMsg(`It's the Computers turn.`);
   }
 
   return {

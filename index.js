@@ -125,7 +125,7 @@ const game = (() => {
 
   function makeMove(e) {
     ///////////////////////////// game
-    let position = e.target.classList[1];
+    let position = e.target.id;
 
     if (gameBoard.isAvailable(e)) {
       switchPlayer();
@@ -326,7 +326,7 @@ const aiGame = (() => {
 
   function playerMove(e) {
     ///////////////////////////// game
-    let position = e.target.classList[1];
+    let position = e.target.id;
 
     if (gameBoard.isAvailable(e)) {
       gameBoard.move(position, token);

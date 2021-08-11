@@ -328,7 +328,7 @@ const aiGame = (() => {
 
   function start() {
     token = "X";
-    display.innerText = "Your Token is X";
+    display.innerText = "Your Turn";
     addTileEventListener();
   }
 
@@ -358,6 +358,7 @@ const aiGame = (() => {
         }
       } else {
         switchToken();
+        switchDisplayMsg();
         setTimeout(computerMove, 500);
       }
     } else {
@@ -371,6 +372,7 @@ const aiGame = (() => {
     if (gameBoard.isAvailableComputer(position)) {
       gameBoard.move(position, token);
       switchToken();
+      switchDisplayMsg();
       gameBoard.checkWin(boardContent, token);
       if (gameBoard.checkTie(boardContent) == true) {
         gameBoard.gameOver("tie");
@@ -384,6 +386,12 @@ const aiGame = (() => {
 
   function switchToken() {
     token == "X" ? (token = "O") : (token = "X");
+  }
+
+  function switchDisplayMsg() {
+    display.innerText == "Your Turn"
+      ? (display.innerText = "Computers Turn")
+      : (display.innerText = "Your Turn");
   }
 
   return {

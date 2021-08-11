@@ -30,7 +30,7 @@ function whichGame(e) {
   ///////////////////////////// global
   if (e.target.innerText == "Hard") {
     gameOption = "hard";
-    //hard AI
+    aiGame.start();
   } else if (e.target.innerText == "Easy") {
     gameOption = "easy";
     aiGame.start();
@@ -307,11 +307,18 @@ const gameBoard = (() => {
 const aiGame = (() => {
   // variables
   let token;
+  let aiMove;
 
   function start() {
     token = "X";
     display.innerText = "Your Turn";
     addTileEventListener();
+
+    if (gameOption == "hard") {
+      aiMove = computerMoveHard;
+    } else {
+      aiMove = computerMoveEasy;
+    }
   }
 
   //bind events
@@ -339,7 +346,7 @@ const aiGame = (() => {
         } else {
           switchToken();
           switchDisplayMsg();
-          setTimeout(computerMove, 500);
+          setTimeout(aiMove, 500);
         }
       }
     } else {
@@ -347,7 +354,7 @@ const aiGame = (() => {
     }
   }
 
-  function computerMove() {
+  function computerMoveEasy() {
     let position = Math.floor(Math.random() * 9);
 
     if (gameBoard.isAvailableComputer(position)) {
@@ -365,9 +372,13 @@ const aiGame = (() => {
       }
     } else {
       if (gameBoard.checkTie(boardContent) == false) {
-        computerMove();
+        computerMoveEasy();
       }
     }
+  }
+
+  function computerMoveHard() {
+    //TODO
   }
 
   function switchToken() {

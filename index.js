@@ -129,8 +129,10 @@ const game = (() => {
       switchPlayer();
       gameBoard.move(position, token);
       gameBoard.checkWin(boardContent, token);
-      if (gameBoard.checkTie(boardContent) == true) {
-        gameBoard.gameOver("tie");
+      if (gameBoard.checkWin(boardContent, token) != true) {
+        if (gameBoard.checkTie(boardContent) == true) {
+          gameBoard.gameOver("tie");
+        }
       }
     } else {
       alert("Invalid move! Try again");
@@ -220,7 +222,6 @@ const gameBoard = (() => {
       if (isEqual(option) == true) {
         if (gameOption == "twoPlayer") {
           winner = game.assessWinner();
-          console.log(winner);
         } else if (gameOption == "easy") {
           token == "X" ? (winner = "player") : (winner = "computer");
         } else if (gameOption == "hard") {
@@ -233,6 +234,10 @@ const gameBoard = (() => {
         highlightWin(winningCombo);
       }
     });
+
+    if (winner != undefined) {
+      return true;
+    }
   }
 
   function highlightWin(code) {
@@ -268,16 +273,16 @@ const gameBoard = (() => {
     renderMsg("Game Over");
 
     if (winner == "tie") {
-      alert("It was a tie! Press the restart button to play again");
+      // alert("It was a tie! Press the restart button to play again");
       renderMsg("It was a tie!");
     } else if (winner == "player") {
-      alert("You Won! Press the restart button to play again");
+      // alert("You Won! Press the restart button to play again");
       renderMsg("You beat the Computer!");
     } else if (winner == "computer") {
-      alert("The Computer won! Press the restart button to play again");
+      // alert("The Computer won! Press the restart button to play again");
       renderMsg("You were beaten by the Computer");
     } else {
-      alert(`Player ${winner} won! Press the restart button to play again`);
+      // alert(`Player ${winner} won! Press the restart button to play again`);
       renderMsg(`Player ${winner} won!`);
     }
   }

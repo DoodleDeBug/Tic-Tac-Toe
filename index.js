@@ -102,9 +102,11 @@ const game = (() => {
   function displayTurn(player) {
     ///////////////////////////// game
     if (player.getName() == "") {
-      display.innerText = `It's ${player.getToken()}'s turn`;
+      renderMsg(`It's ${player.getToken()}'s turn`);
     } else {
-      display.innerText = `It's ${player.getName()}'s turn. Your token is ${player.getToken()}`;
+      renderMsg(
+        `It's ${player.getName()}'s turn. Your token is ${player.getToken()}`
+      );
     }
   }
 
@@ -185,8 +187,6 @@ const gameBoard = (() => {
   function move(position, token) {
     boardContent[position] = token;
     render();
-
-    // checkWin(boardContent, token);
   }
 
   function checkWin(bC, token) {
@@ -211,7 +211,7 @@ const gameBoard = (() => {
         } else if (gameOption == "easy") {
           token == "X" ? (winner = "player") : (winner = "computer");
         } else if (gameOption == "hard") {
-          // some code
+          // TODO
         }
 
         let winningCombo = winCodes[winOptions.indexOf(option)];
@@ -258,18 +258,18 @@ const gameBoard = (() => {
     aiGame.removeTileEventListener();
     renderMsg("Game Over");
 
-    if (winner == "tie") {
-      // alert("It was a tie! Press the restart button to play again");
-      renderMsg("It was a tie!");
-    } else if (winner == "player") {
-      // alert("You Won! Press the restart button to play again");
-      renderMsg("You beat the Computer!");
-    } else if (winner == "computer") {
-      // alert("The Computer won! Press the restart button to play again");
-      renderMsg("You were beaten by the Computer");
-    } else {
-      // alert(`Player ${winner} won! Press the restart button to play again`);
-      renderMsg(`Player ${winner} won!`);
+    switch (winner) {
+      case "tie":
+        renderMsg("It was a tie!");
+        break;
+      case "player":
+        renderMsg("You beat the Computer!");
+        break;
+      case "computer":
+        renderMsg("You were beaten by the Computer");
+        break;
+      default:
+        renderMsg(`Player ${winner} won!`);
     }
   }
 
@@ -281,7 +281,7 @@ const gameBoard = (() => {
   function restartGame() {
     //////////////////////////// global
     modal.classList.toggle("hidden");
-    display.innerText = "";
+    renderMsg("");
     clearBoard();
     game.removeTileEventListener();
     aiGame.removeTileEventListener();
@@ -290,15 +290,12 @@ const gameBoard = (() => {
         removeHighlight(tile);
       }
     });
-
-    gameOption = "";
   }
 
   return {
     isAvailable,
     isAvailableComputer,
     move,
-    removeHighlight,
     checkWin,
     checkTie,
     gameOver,

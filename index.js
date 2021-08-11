@@ -358,7 +358,7 @@ const aiGame = (() => {
         }
       } else {
         switchToken();
-        computerMove();
+        setTimeout(computerMove, 500);
       }
     } else {
       alert("Invalid move! Try again");

@@ -335,11 +335,9 @@ const aiGame = (() => {
       gameBoard.move(position, token);
 
       if (gameBoard.checkWin(boardContent, token) == true) {
-        console.log("there is winner");
         gameBoard.checkWin(boardContent, token);
       } else {
         if (gameBoard.checkTie(boardContent) == true) {
-          console.log("there is no winner");
           gameBoard.gameOver("tie");
         } else {
           switchToken();
@@ -357,11 +355,16 @@ const aiGame = (() => {
 
     if (gameBoard.isAvailableComputer(position)) {
       gameBoard.move(position, token);
-      switchToken();
-      switchDisplayMsg();
-      gameBoard.checkWin(boardContent, token);
-      if (gameBoard.checkTie(boardContent) == true) {
-        gameBoard.gameOver("tie");
+
+      if (gameBoard.checkWin(boardContent, token) == true) {
+        gameBoard.checkWin(boardContent, token);
+      } else {
+        if (gameBoard.checkTie(boardContent) == true) {
+          gameBoard.gameOver("tie");
+        } else {
+          switchToken();
+          switchDisplayMsg();
+        }
       }
     } else {
       if (gameBoard.checkTie(boardContent) == false) {

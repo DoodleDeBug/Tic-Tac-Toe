@@ -189,20 +189,6 @@ const gameBoard = (() => {
     // checkWin(boardContent, token);
   }
 
-  function someoneWon(bC) {
-    return [bC[0], bC[1], bC[2]] || [bC[3], bC[4], bC[5]] || [
-        bC[6],
-        bC[7],
-        bC[8],
-      ] || [bC[0], bC[3], bC[6]] || [bC[1], bC[4], bC[7]] || [
-        bC[2],
-        bC[5],
-        bC[8],
-      ] || [bC[0], bC[4], bC[8]] || [bC[2], bC[4], bC[6]]
-      ? true
-      : false;
-  }
-
   function checkWin(bC, token) {
     let winOptions = [
       [bC[0], bC[1], bC[2]],
@@ -315,7 +301,6 @@ const gameBoard = (() => {
     removeHighlight,
     checkWin,
     checkTie,
-    someoneWon,
     gameOver,
   };
 })();
@@ -348,18 +333,19 @@ const aiGame = (() => {
 
     if (gameBoard.isAvailable(e)) {
       gameBoard.move(position, token);
-      if (gameBoard.someoneWon == true) {
+
+      if (gameBoard.checkWin(boardContent, token) == true) {
         console.log("there is winner");
         gameBoard.checkWin(boardContent, token);
-      } else if (gameBoard.someoneWon == false) {
-        console.log("there is no winner");
-        if (gameBoard.checkTie(boardContent) == true) {
-          gameBoard.gameOver("tie");
-        }
       } else {
-        switchToken();
-        switchDisplayMsg();
-        setTimeout(computerMove, 500);
+        if (gameBoard.checkTie(boardContent) == true) {
+          console.log("there is no winner");
+          gameBoard.gameOver("tie");
+        } else {
+          switchToken();
+          switchDisplayMsg();
+          setTimeout(computerMove, 500);
+        }
       }
     } else {
       alert("Invalid move! Try again");
@@ -390,8 +376,8 @@ const aiGame = (() => {
 
   function switchDisplayMsg() {
     display.innerText == "Your Turn"
-      ? (display.innerText = "Computers Turn")
-      : (display.innerText = "Your Turn");
+      ? renderMsg("Computers Turn")
+      : renderMsg("Your Turn");
   }
 
   return {

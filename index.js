@@ -180,6 +180,11 @@ const gameBoard = (() => {
     return e.target.innerText == "" ? true : false;
   }
 
+  // returns list of the indexes of empty spots on the board
+  function emptyIndexies(bc) {
+    return bc.filter((space) => space == "");
+  }
+
   function isAvailableComputer(position) {
     return tilesArray[position].innerText == "" ? true : false;
   }
@@ -206,23 +211,44 @@ const gameBoard = (() => {
 
     winOptions.forEach((option) => {
       if (isEqual(option) == true) {
+        let winningCombo = winCodes[winOptions.indexOf(option)];
+        highlightWin(winningCombo);
+
         if (gameOption == "twoPlayer") {
           winner = game.assessWinner();
+          gameOver(winner);
         } else if (gameOption == "easy") {
           token == "X" ? (winner = "player") : (winner = "computer");
-        } else if (gameOption == "hard") {
-          // TODO
+          gameOver(winner);
         }
-
-        let winningCombo = winCodes[winOptions.indexOf(option)];
-
-        gameOver(winner);
-        highlightWin(winningCombo);
+        // else if (gameOption == "hard") {
+        //   if (option[0] == token) {
+        //     console.log("before return");
+        //   }
+        // }
       }
     });
 
     if (winner != undefined) {
       return true;
+    }
+  }
+
+  // winning combinations using the board indexies
+  function winning(board, player) {
+    if (
+      (board[0] == player && board[1] == player && board[2] == player) ||
+      (board[3] == player && board[4] == player && board[5] == player) ||
+      (board[6] == player && board[7] == player && board[8] == player) ||
+      (board[0] == player && board[3] == player && board[6] == player) ||
+      (board[1] == player && board[4] == player && board[7] == player) ||
+      (board[2] == player && board[5] == player && board[8] == player) ||
+      (board[0] == player && board[4] == player && board[8] == player) ||
+      (board[2] == player && board[4] == player && board[6] == player)
+    ) {
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -295,8 +321,10 @@ const gameBoard = (() => {
   return {
     isAvailable,
     isAvailableComputer,
+    emptyIndexies,
     move,
     checkWin,
+    winning,
     checkTie,
     gameOver,
   };
@@ -378,7 +406,74 @@ const aiGame = (() => {
   }
 
   function computerMoveHard() {
-    //TODO
+    let position = minimax(boardContent, token);
+    gameBoard.move(position, token);
+  }
+
+  function minimax(bc, token) {
+    //available spots
+    let availSpots = gameBoard.emptyIndexies(bc);
+
+    // checks for the terminal states such as win, lose, and tie
+    //and returning a value accordingly
+
+    if (gameBoard.winning(boardContent, "X")) {
+      return { score: -10 };
+    } else if (gameBoard.winning(boardContent, "O")) {
+      return { score: 10 };
+    } else if (availSpots.length === 0) {
+      return { score: 0 };
+    }
+
+    // an array to collect all the objects
+    let moves = [];
+
+    // loop through available spots
+    for (let i = 0; i < availSpots.length; i++) {
+      //create an object for each and store the index of that spot
+      let move = {};
+      move.index = boardContent[availSpots[i]];
+
+      // set the empty spot to the current player
+      boardContent[availSpots[i]] = token;
+
+      /*collect the score resulted from calling minimax 
+      on the opponent of the current player*/
+
+      switchToken();
+      let result = minimax(boardContent, token);
+      move.score = result.score;
+
+      // reset the spot to empty
+      boardContent[availSpots[i]] = move.index;
+
+      // push the object to the array
+      moves.push(move);
+    }
+
+    // if it is the computer's turn loop over the moves and choose the move with the highest score
+    let bestMove;
+    if (token === "O") {
+      let bestScore = -10000;
+      for (let i = 0; i < moves.length; i++) {
+        if (moves[i].score > bestScore) {
+          bestScore = moves[i].score;
+          bestMove = i;
+        }
+      }
+    } else {
+      // else loop over the moves and choose the move with the lowest score
+      let bestScore = 10000;
+      for (let i = 0; i < moves.length; i++) {
+        if (moves[i].score < bestScore) {
+          bestScore = moves[i].score;
+          bestMove = i;
+        }
+      }
+    }
+
+    // return the chosen move (object) from the moves array
+    return moves[bestMove];
   }
 
   function switchToken() {

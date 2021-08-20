@@ -336,6 +336,7 @@ const aiGame = (() => {
   // variables
   let token;
   let aiMove;
+  let origBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
   function start() {
     token = "X";
@@ -365,6 +366,7 @@ const aiGame = (() => {
 
     if (gameBoard.isAvailable(e)) {
       gameBoard.move(position, token);
+      origBoard[position] = "X";
 
       if (gameBoard.checkWin(boardContent, token) == true) {
         gameBoard.checkWin(boardContent, token);
@@ -406,20 +408,21 @@ const aiGame = (() => {
   }
 
   function computerMoveHard() {
-    let position = minimax(boardContent, token);
-    gameBoard.move(position, token);
+    let bestSpot = minimax(origBoard, token);
+    gameBoard.move(bestSpot.index, token);
+    origBoard[bestSpot.index] = token;
   }
 
-  function minimax(bc, token) {
+  function minimax(newBoard, token) {
     //available spots
-    let availSpots = gameBoard.emptyIndexies(bc);
+    let availSpots = newBoard.filter((s) => s != "O" && s != "X");
 
     // checks for the terminal states such as win, lose, and tie
     //and returning a value accordingly
 
-    if (gameBoard.winning(boardContent, "X")) {
+    if (gameBoard.winning(newBoard, "X")) {
       return { score: -10 };
-    } else if (gameBoard.winning(boardContent, "O")) {
+    } else if (gameBoard.winning(newBoard, "O")) {
       return { score: 10 };
     } else if (availSpots.length === 0) {
       return { score: 0 };
@@ -432,20 +435,20 @@ const aiGame = (() => {
     for (let i = 0; i < availSpots.length; i++) {
       //create an object for each and store the index of that spot
       let move = {};
-      move.index = boardContent[availSpots[i]];
+      move.index = newBoard[availSpots[i]];
 
       // set the empty spot to the current player
-      boardContent[availSpots[i]] = token;
+      newBoard[availSpots[i]] = token;
 
       /*collect the score resulted from calling minimax 
       on the opponent of the current player*/
 
       switchToken();
-      let result = minimax(boardContent, token);
+      let result = minimax(newBoard, token);
       move.score = result.score;
 
       // reset the spot to empty
-      boardContent[availSpots[i]] = move.index;
+      newBoard[availSpots[i]] = move.index;
 
       // push the object to the array
       moves.push(move);

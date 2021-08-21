@@ -16,6 +16,7 @@ const display = document.getElementById("display");
 
 const tiles = document.querySelectorAll(".tile"); ///////////////////////////// gameboard
 let boardContent = ["", "", "", "", "", "", "", "", ""]; ///////////////////////////// gameboard
+let origBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
 let gameOption;
 
@@ -301,6 +302,7 @@ const gameBoard = (() => {
 
   function clearBoard() {
     boardContent = ["", "", "", "", "", "", "", "", ""];
+    origBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     render();
   }
 
@@ -336,7 +338,6 @@ const aiGame = (() => {
   // variables
   let token;
   let aiMove;
-  let origBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
   function start() {
     token = "X";
@@ -366,7 +367,7 @@ const aiGame = (() => {
 
     if (gameBoard.isAvailable(e)) {
       gameBoard.move(position, token);
-      origBoard[position] = "X";
+      origBoard[position] = token;
 
       if (gameBoard.checkWin(boardContent, token) == true) {
         gameBoard.checkWin(boardContent, token);
@@ -410,7 +411,9 @@ const aiGame = (() => {
   function computerMoveHard() {
     let bestSpot = minimax(origBoard, token);
     gameBoard.move(bestSpot.index, token);
+    console.log(bestSpot.index);
     origBoard[bestSpot.index] = token;
+    switchToken();
   }
 
   function minimax(newBoard, token) {

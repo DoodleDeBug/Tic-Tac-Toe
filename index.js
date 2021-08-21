@@ -218,15 +218,10 @@ const gameBoard = (() => {
         if (gameOption == "twoPlayer") {
           winner = game.assessWinner();
           gameOver(winner);
-        } else if (gameOption == "easy") {
+        } else if (gameOption == "easy" || gameOption == "hard") {
           token == "X" ? (winner = "player") : (winner = "computer");
           gameOver(winner);
         }
-        // else if (gameOption == "hard") {
-        //   if (option[0] == token) {
-        //     console.log("before return");
-        //   }
-        // }
       }
     });
 
@@ -411,9 +406,12 @@ const aiGame = (() => {
   function computerMoveHard() {
     let bestSpot = minimax(origBoard, token);
     gameBoard.move(bestSpot.index, token);
-    console.log(bestSpot.index);
     origBoard[bestSpot.index] = token;
-    switchToken();
+    if (gameBoard.checkWin(boardContent, token) == true) {
+      gameBoard.checkWin(boardContent, token);
+    } else {
+      switchToken();
+    }
   }
 
   function minimax(newBoard, token) {
@@ -446,11 +444,15 @@ const aiGame = (() => {
       /*collect the score resulted from calling minimax 
       on the opponent of the current player*/
 
-      switchToken();
-      let result = minimax(newBoard, token);
-      move.score = result.score;
+      if (token == "O") {
+        var result = minimax(newBoard, "X");
+        move.score = result.score;
+      } else {
+        var result = minimax(newBoard, "O");
+        move.score = result.score;
+      }
 
-      // reset the spot to empty
+      //reset the spot to empty
       newBoard[availSpots[i]] = move.index;
 
       // push the object to the array

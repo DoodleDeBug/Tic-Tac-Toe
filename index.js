@@ -411,12 +411,13 @@ const aiGame = (() => {
       gameBoard.checkWin(boardContent, token);
     } else {
       switchToken();
+      switchDisplayMsg();
     }
   }
 
   function minimax(newBoard, token) {
     //available spots
-    let availSpots = newBoard.filter((s) => s != "O" && s != "X");
+    let availSpots = newBoard.filter((spot) => spot != "O" && spot != "X");
 
     // checks for the terminal states such as win, lose, and tie
     //and returning a value accordingly
@@ -444,13 +445,15 @@ const aiGame = (() => {
       /*collect the score resulted from calling minimax 
       on the opponent of the current player*/
 
+      let result;
+
       if (token == "O") {
-        var result = minimax(newBoard, "X");
-        move.score = result.score;
+        result = minimax(newBoard, "X");
       } else {
-        var result = minimax(newBoard, "O");
-        move.score = result.score;
+        result = minimax(newBoard, "O");
       }
+
+      move.score = result.score;
 
       //reset the spot to empty
       newBoard[availSpots[i]] = move.index;
